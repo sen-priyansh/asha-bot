@@ -1,0 +1,194 @@
+2025-03-08 22:31:15,253 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:31:15,265 - bot - ERROR - Failed to load extension moderation: Extension 'moderation' raised an error: AttributeError: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+2025-03-08 22:31:15,270 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:31:17,636 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:31:17,643 - bot - ERROR - Failed to load extension utility: Extension 'utility' raised an error: ModuleNotFoundError: No module named 'psutil'
+2025-03-08 22:31:17,644 - discord.client - INFO - logging in using static token
+2025-03-08 22:31:17,646 - bot - ERROR - Bot crashed: expected token to be a str, received NoneType instead
+2025-03-08 22:35:51,899 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:35:51,915 - bot - ERROR - Failed to load extension moderation: Extension 'moderation' raised an error: AttributeError: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+2025-03-08 22:35:51,925 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:35:53,439 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:35:53,449 - bot - ERROR - Failed to load extension utility: Extension 'utility' raised an error: ModuleNotFoundError: No module named 'psutil'
+2025-03-08 22:35:53,449 - discord.client - INFO - logging in using static token
+2025-03-08 22:35:53,451 - bot - ERROR - Bot crashed: expected token to be a str, received NoneType instead
+2025-03-08 22:39:25,526 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:39:25,534 - bot - INFO - Loaded extension: moderation
+2025-03-08 22:39:25,536 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:39:26,667 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:39:26,668 - bot - ERROR - Failed to load extension utility: Extension 'utility' raised an error: ModuleNotFoundError: No module named 'psutil'
+2025-03-08 22:39:26,669 - discord.client - INFO - logging in using static token
+2025-03-08 22:39:26,670 - bot - ERROR - Bot crashed: expected token to be a str, received NoneType instead
+2025-03-08 22:40:06,035 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:40:06,049 - bot - INFO - Loaded extension: moderation
+2025-03-08 22:40:06,051 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:40:07,295 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:40:07,297 - bot - ERROR - Failed to load extension utility: Extension 'utility' raised an error: ModuleNotFoundError: No module named 'psutil'
+2025-03-08 22:40:07,297 - discord.client - INFO - logging in using static token
+2025-03-08 22:40:07,299 - bot - ERROR - Bot crashed: expected token to be a str, received NoneType instead
+2025-03-08 22:40:48,074 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:40:48,077 - bot - INFO - Loaded extension: moderation
+2025-03-08 22:40:48,079 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:40:49,072 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:40:49,090 - bot - INFO - Loaded extension: utility
+2025-03-08 22:40:49,091 - discord.client - INFO - logging in using static token
+2025-03-08 22:40:49,092 - bot - ERROR - Bot crashed: expected token to be a str, received NoneType instead
+2025-03-08 22:44:09,092 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:44:09,096 - bot - INFO - Loaded extension: moderation
+2025-03-08 22:44:09,097 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:44:10,103 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:44:10,116 - bot - INFO - Loaded extension: utility
+2025-03-08 22:44:10,117 - discord.client - INFO - logging in using static token
+2025-03-08 22:44:12,664 - bot - ERROR - Bot crashed: Shard ID None is requesting privileged intents that have not been explicitly enabled in the developer portal. It is recommended to go to https://discord.com/developers/applications/ and explicitly enable the privileged intents within your application's page. If this is not possible, then consider disabling the privileged intents instead.
+2025-03-08 22:45:33,653 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:45:33,657 - bot - INFO - Loaded extension: moderation
+2025-03-08 22:45:33,658 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:45:34,831 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:45:34,845 - bot - INFO - Loaded extension: utility
+2025-03-08 22:45:34,845 - discord.client - INFO - logging in using static token
+2025-03-08 22:45:36,876 - bot - ERROR - Bot crashed: Shard ID None is requesting privileged intents that have not been explicitly enabled in the developer portal. It is recommended to go to https://discord.com/developers/applications/ and explicitly enable the privileged intents within your application's page. If this is not possible, then consider disabling the privileged intents instead.
+2025-03-08 22:47:30,255 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 22:47:30,262 - bot - INFO - Loaded extension: moderation
+2025-03-08 22:47:30,264 - bot - INFO - Loaded extension: autorole
+2025-03-08 22:47:31,489 - bot - INFO - Loaded extension: aichat
+2025-03-08 22:47:31,502 - bot - INFO - Loaded extension: utility
+2025-03-08 22:47:31,502 - discord.client - INFO - logging in using static token
+2025-03-08 22:47:34,249 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 186f3e5c730cdf7e74e9459a5cfda47e).
+2025-03-08 22:47:36,265 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 22:47:36,267 - bot - INFO - Bot is ready! Serving 0 guilds.
+2025-03-08 22:48:31,781 - bot - INFO - Joined guild: Test server (ID: 1211626967548432384)
+2025-03-08 23:19:00,726 - bot - INFO - Bot stopped by user.
+2025-03-08 23:20:02,176 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:20:02,182 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:20:02,184 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:20:03,768 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:20:03,785 - bot - INFO - Loaded extension: utility
+2025-03-08 23:20:03,786 - discord.client - INFO - logging in using static token
+2025-03-08 23:20:06,494 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 52ff552bf5deafa1dccf13cf3ff949e8).
+2025-03-08 23:20:08,503 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 23:20:08,504 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-08 23:22:20,331 - bot - INFO - Bot stopped by user.
+2025-03-08 23:23:21,159 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:23:21,162 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:23:21,164 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:23:22,290 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:23:22,303 - bot - INFO - Loaded extension: utility
+2025-03-08 23:23:22,304 - discord.client - INFO - logging in using static token
+2025-03-08 23:23:24,343 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f6aa36ccb6c5e9e228b0f93f664f1154).
+2025-03-08 23:23:26,369 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 23:23:26,370 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-08 23:24:29,893 - bot - INFO - Bot stopped by user.
+2025-03-08 23:24:35,554 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:24:35,558 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:24:35,560 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:24:36,876 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:24:36,890 - bot - INFO - Loaded extension: utility
+2025-03-08 23:24:36,891 - discord.client - INFO - logging in using static token
+2025-03-08 23:24:39,346 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: e9ece80e3fd38ca40a0238d2f0b64f8d).
+2025-03-08 23:24:41,356 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 23:24:41,358 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-08 23:26:36,591 - bot - INFO - Bot stopped by user.
+2025-03-08 23:29:08,032 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:29:08,037 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:29:08,039 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:29:09,307 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:29:09,327 - bot - INFO - Loaded extension: utility
+2025-03-08 23:29:09,327 - discord.client - INFO - logging in using static token
+2025-03-08 23:29:11,460 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 2a7313ab241db674b304b610cf3219d4).
+2025-03-08 23:29:13,474 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 23:29:13,475 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-08 23:31:05,004 - bot - INFO - Bot stopped by user.
+2025-03-08 23:31:27,932 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:31:27,936 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:31:27,937 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:31:31,255 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:31:31,272 - bot - INFO - Loaded extension: utility
+2025-03-08 23:31:31,272 - discord.client - INFO - logging in using static token
+2025-03-08 23:31:34,835 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 293c71e7c660d59e264fb2e1a20cbe1f).
+2025-03-08 23:31:36,841 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 23:31:36,842 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-08 23:32:47,055 - bot - INFO - Bot stopped by user.
+2025-03-08 23:40:31,039 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:40:31,041 - discord.client - INFO - logging in using static token
+2025-03-08 23:40:32,116 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:40:32,118 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:40:36,434 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:40:36,450 - bot - INFO - Loaded extension: utility
+2025-03-08 23:41:23,445 - bot - INFO - Bot stopped by user.
+2025-03-08 23:41:23,512 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001F954E01550>
+2025-03-08 23:42:42,633 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:42:42,634 - discord.client - INFO - logging in using static token
+2025-03-08 23:42:43,846 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:42:43,848 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:42:47,946 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:42:47,964 - bot - INFO - Loaded extension: utility
+2025-03-08 23:43:48,100 - bot - INFO - Slash commands synced
+2025-03-08 23:43:49,242 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 3cbf239c370c62f7b4019cf3556469ff).
+2025-03-08 23:43:51,254 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 23:43:51,255 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-08 23:47:11,677 - bot - INFO - Joined guild: Test server (ID: 1211626967548432384)
+2025-03-08 23:49:50,416 - bot - INFO - Bot stopped by user.
+2025-03-08 23:56:36,663 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-08 23:56:36,665 - discord.client - INFO - logging in using static token
+2025-03-08 23:56:38,001 - bot - INFO - Loaded extension: moderation
+2025-03-08 23:56:38,004 - bot - INFO - Loaded extension: autorole
+2025-03-08 23:56:42,189 - bot - INFO - Loaded extension: aichat
+2025-03-08 23:56:42,206 - bot - INFO - Loaded extension: utility
+2025-03-08 23:56:42,206 - bot - INFO - Syncing slash commands...
+2025-03-08 23:57:42,193 - bot - INFO - Slash commands synced
+2025-03-08 23:57:43,292 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 26358ee69ba36314f07a58146da60178).
+2025-03-08 23:57:45,338 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-08 23:57:45,339 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-08 23:58:27,753 - bot - INFO - Joined guild: Test server (ID: 1211626967548432384)
+2025-03-08 23:58:28,330 - bot - INFO - Synced slash commands for guild 1211626967548432384
+2025-03-09 00:00:51,819 - bot - INFO - Bot stopped by user.
+2025-03-09 00:00:59,724 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-09 00:00:59,726 - discord.client - INFO - logging in using static token
+2025-03-09 00:01:00,727 - bot - INFO - Loaded extension: moderation
+2025-03-09 00:01:00,729 - bot - INFO - Loaded extension: autorole
+2025-03-09 00:01:08,316 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-09 00:01:08,318 - discord.client - INFO - logging in using static token
+2025-03-09 00:01:09,926 - bot - INFO - Loaded extension: moderation
+2025-03-09 00:01:09,927 - bot - INFO - Loaded extension: autorole
+2025-03-09 00:01:14,861 - bot - INFO - Loaded extension: aichat
+2025-03-09 00:01:14,880 - bot - INFO - Loaded extension: utility
+2025-03-09 00:01:14,880 - bot - INFO - Syncing slash commands...
+2025-03-09 00:02:14,973 - bot - INFO - Slash commands synced
+2025-03-09 00:02:15,921 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 590b0d3ebaaaeb8418d0549d9b758c70).
+2025-03-09 00:02:17,934 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-09 00:02:17,935 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-09 00:04:37,874 - bot - INFO - Joined guild: Test server (ID: 1211626967548432384)
+2025-03-09 00:04:39,856 - bot - INFO - Synced slash commands for guild 1211626967548432384
+2025-03-09 00:05:37,063 - bot - INFO - Joined guild: AIADS batch 2024 (ID: 1308080383954391121)
+2025-03-09 00:05:37,641 - bot - INFO - Synced slash commands for guild 1308080383954391121
+2025-03-09 00:17:21,094 - bot - INFO - Bot stopped by user.
+2025-03-09 00:17:26,440 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-09 00:17:26,442 - discord.client - INFO - logging in using static token
+2025-03-09 00:17:27,691 - bot - INFO - Loaded extension: moderation
+2025-03-09 00:17:27,696 - bot - INFO - Loaded extension: autorole
+2025-03-09 00:17:30,966 - bot - INFO - Loaded extension: aichat
+2025-03-09 00:17:30,993 - bot - INFO - Loaded extension: utility
+2025-03-09 00:17:30,993 - bot - INFO - Syncing slash commands...
+2025-03-09 00:18:31,095 - bot - INFO - Slash commands synced
+2025-03-09 00:18:32,084 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 65ae908be2fc7a4fac03a635f6ab188d).
+2025-03-09 00:18:34,087 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-09 00:18:34,088 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-09 00:20:10,737 - bot - INFO - Joined guild: Test server (ID: 1211626967548432384)
+2025-03-09 00:20:11,368 - bot - INFO - Synced slash commands for guild 1211626967548432384
+2025-03-09 00:40:51,995 - bot - INFO - Bot stopped by user.
+2025-03-09 14:06:16,326 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-09 14:06:16,334 - discord.client - INFO - logging in using static token
+2025-03-09 14:06:17,863 - bot - INFO - Loaded extension: moderation
+2025-03-09 14:06:17,886 - bot - INFO - Loaded extension: autorole
+2025-03-09 14:06:26,535 - bot - INFO - Loaded extension: aichat
+2025-03-09 14:06:26,608 - bot - INFO - Loaded extension: utility
+2025-03-09 14:06:26,610 - bot - INFO - Syncing slash commands...
+2025-03-09 14:07:26,350 - bot - INFO - Slash commands synced
+2025-03-09 14:07:27,668 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 16bb5f6c66bcce7ee6671d640fddeb7d).
+2025-03-09 14:07:29,677 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-03-09 14:07:29,679 - bot - INFO - Bot is ready! Serving 1 guilds.
+2025-03-09 14:14:31,480 - bot - INFO - Synced slash commands for guild 1341333219458551848
+2025-03-09 14:19:07,496 - bot - INFO - Joined guild: AIADS batch 2024 (ID: 1308080383954391121)
+2025-03-09 14:19:08,615 - bot - INFO - Synced slash commands for guild 1308080383954391121
+2025-03-09 14:31:40,416 - bot - INFO - Bot stopped by user.
