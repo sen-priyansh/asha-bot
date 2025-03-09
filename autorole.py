@@ -5,6 +5,7 @@ import config
 import json
 import os
 import asyncio
+from aiohttp import web
 
 class AutoRole(commands.Cog):
     def __init__(self, bot):
@@ -13,10 +14,13 @@ class AutoRole(commands.Cog):
         self.roles_file = 'autoroles.json'
         self.load_roles()  # Load saved roles when the cog starts
         self.save_roles_task.start()  # Start the background task
+        self.web_server_task.start()  # Start the web server
+        self.port = int(os.getenv('PORT', 8080))  # Use PORT env variable or default to 8080
     
     def cog_unload(self):
         """Called when the cog is unloaded"""
         self.save_roles_task.cancel()  # Stop the background task
+        self.web_server_task.cancel()  # Stop the web server
     
     def load_roles(self):
         """Load saved roles from file"""
@@ -183,6 +187,40 @@ class AutoRole(commands.Cog):
                     fail_count += 1
         
         await interaction.followup.send(f"Role assignment complete. Successfully assigned to {success_count} members. Failed for {fail_count} members.")
+
+    async def handle_status(self, request):
+        """Handle status check requests"""
+        return web.Response(text=json.dumps({
+            "status": "online",
+            "guilds_with_autorole": len(self.custom_roles),
+            "bot_latency": round(self.bot.latency * 1000, 2)
+        }), content_type='application/json')
+
+    @tasks.loop()
+    async def web_server_task(self):
+        """Run the web server"""
+        app = web.Application()
+        app.router.add_get('/status', self.handle_status)
+        
+        runner = web.AppRunner(app)
+        await runner.setup()
+        site = web.TCPSite(runner, '0.0.0.0', self.port)
+        
+        try:
+            await site.start()
+            print(f"Web server started on port {self.port}")
+            # Keep the server running
+            while True:
+                await asyncio.sleep(3600)  # Sleep for an hour
+        except Exception as e:
+            print(f"Web server error: {e}")
+        finally:
+            await runner.cleanup()
+    
+    @web_server_task.before_loop
+    async def before_web_server(self):
+        """Wait until the bot is ready before starting the web server"""
+        await self.bot.wait_until_ready()
 
 async def setup(bot):
     await bot.add_cog(AutoRole(bot))
