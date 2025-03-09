@@ -1,12 +1,53 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord import app_commands
 import config
+import json
+import os
+import asyncio
 
 class AutoRole(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.custom_roles = {}  # {guild_id: role_id}
+        self.roles_file = 'autoroles.json'
+        self.load_roles()  # Load saved roles when the cog starts
+        self.save_roles_task.start()  # Start the background task
+    
+    def cog_unload(self):
+        """Called when the cog is unloaded"""
+        self.save_roles_task.cancel()  # Stop the background task
+    
+    def load_roles(self):
+        """Load saved roles from file"""
+        try:
+            if os.path.exists(self.roles_file):
+                with open(self.roles_file, 'r') as f:
+                    self.custom_roles = json.load(f)
+        except Exception as e:
+            print(f"Error loading roles: {e}")
+            
+    @tasks.loop(minutes=5)  # Run every 5 minutes
+    async def save_roles_task(self):
+        """Background task to save roles periodically"""
+        try:
+            with open(self.roles_file, 'w') as f:
+                json.dump(self.custom_roles, f)
+        except Exception as e:
+            print(f"Error saving roles: {e}")
+            
+    @save_roles_task.before_loop
+    async def before_save_roles(self):
+        """Wait until the bot is ready before starting the task"""
+        await self.bot.wait_until_ready()
+            
+    async def save_roles(self):
+        """Save roles immediately"""
+        try:
+            with open(self.roles_file, 'w') as f:
+                json.dump(self.custom_roles, f)
+        except Exception as e:
+            print(f"Error saving roles: {e}")
     
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -77,6 +118,7 @@ class AutoRole(commands.Cog):
             
         guild_id = str(interaction.guild.id)
         self.custom_roles[guild_id] = str(role.id)
+        await self.save_roles()  # Save immediately when a role is set
         
         await interaction.response.send_message(f"Auto-role has been set to {role.mention}. New members will receive this role when they join.")
     
@@ -88,6 +130,7 @@ class AutoRole(commands.Cog):
         
         if guild_id in self.custom_roles:
             del self.custom_roles[guild_id]
+            await self.save_roles()  # Save immediately when a role is removed
             await interaction.response.send_message("Auto-role has been removed. New members will no longer receive an automatic role.")
         else:
             await interaction.response.send_message("No auto-role is set for this server.", ephemeral=True)
