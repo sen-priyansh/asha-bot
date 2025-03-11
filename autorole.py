@@ -211,7 +211,7 @@ class AutoRole(commands.Cog):
             print(f"Web server started on port {self.port}")
             # Keep the server running
             while True:
-                await asyncio.sleep(3600)  # Sleep for an hour
+                await asyncio.sleep(300)  # Sleep for an hour
         except Exception as e:
             print(f"Web server error: {e}")
         finally:
