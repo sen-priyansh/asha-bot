@@ -77,7 +77,7 @@ class Leveling(commands.Cog):
 
     @app_commands.command(name="check", description="Check your current level and XP")
     @app_commands.describe(member="The member to check (defaults to yourself)")
-    async def check(self, interaction: app_commands.Interaction, member: Optional[discord.Member] = None):
+    async def check(self, interaction: discord.Interaction, member: Optional[discord.Member] = None):
        # ... (check command implementation) ...
         member = member or interaction.user
         guild_id = str(interaction.guild.id)
@@ -120,7 +120,7 @@ class Leveling(commands.Cog):
 
     @app_commands.command(name="leaderboard", description="Show the server XP leaderboard")
     @app_commands.describe(page="The page of the leaderboard to show")
-    async def level_leaderboard(self, interaction: app_commands.Interaction, page: int = 1):
+    async def level_leaderboard(self, interaction: discord.Interaction, page: int = 1):
        # ... (leaderboard command implementation) ...
         guild_id = str(interaction.guild.id)
 
@@ -176,15 +176,12 @@ class Leveling(commands.Cog):
                     level = data.get("level", 0)
                     xp = data.get("xp", 0)
 
-                    lb_text += f"**{idx}. {member_name}**
-"
-                    lb_text += f"   Level: `{level}` | XP: `{xp}`
-"
+                    lb_text += f"**{idx}. {member_name}**\n"
+                    lb_text += f"   Level: `{level}` | XP: `{xp}`\n"
 
                 except Exception as e:
                      logger.warning(f"Error processing user {user_id} for leaderboard: {e}")
-                     lb_text += f"**{idx}. Error processing user**
-"
+                     lb_text += f"**{idx}. Error processing user**\n"
 
 
         embed.add_field(name="Rankings", value=lb_text, inline=False)
@@ -199,7 +196,7 @@ class Leveling(commands.Cog):
     @admin_group.command(name="setxp", description="Set a user's XP directly")
     @app_commands.describe(member="The member to set XP for", xp="The amount of XP to set")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_setxp(self, interaction: app_commands.Interaction, member: discord.Member, xp: int):
+    async def level_setxp(self, interaction: discord.Interaction, member: discord.Member, xp: int):
        # ... (setxp implementation) ...
         if xp < 0:
             await interaction.response.send_message("XP cannot be negative!", ephemeral=True)
@@ -225,7 +222,7 @@ class Leveling(commands.Cog):
     @admin_group.command(name="addxp", description="Add XP to a user")
     @app_commands.describe(member="The member to add XP to", xp="The amount of XP to add")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_addxp(self, interaction: app_commands.Interaction, member: discord.Member, xp: int):
+    async def level_addxp(self, interaction: discord.Interaction, member: discord.Member, xp: int):
        # ... (addxp implementation) ...
         guild_id = str(interaction.guild.id)
         user_id = str(member.id)
@@ -255,7 +252,7 @@ class Leveling(commands.Cog):
     @admin_group.command(name="setlevel", description="Set a user's level")
     @app_commands.describe(member="The member to set the level for", level="The level to set for the member")
     @app_commands.checks.has_permissions(administrator=True)
-    async def set_level(self, interaction: app_commands.Interaction, member: discord.Member, level: int):
+    async def set_level(self, interaction: discord.Interaction, member: discord.Member, level: int):
        # ... (setlevel implementation) ...
         if level < 0:
             await interaction.response.send_message("Level cannot be negative", ephemeral=True)
@@ -284,7 +281,7 @@ class Leveling(commands.Cog):
     @role_group.command(name="add", description="Add a role reward for reaching a specific level")
     @app_commands.describe(level="The level at which to award the role", role="The role to award at the specified level")
     @app_commands.checks.has_permissions(administrator=True)
-    async def add_level_role(self, interaction: app_commands.Interaction, level: int, role: discord.Role):
+    async def add_level_role(self, interaction: discord.Interaction, level: int, role: discord.Role):
         if level < 1:
             await interaction.response.send_message("Level must be at least 1!", ephemeral=True)
             return
@@ -321,7 +318,7 @@ class Leveling(commands.Cog):
     @role_group.command(name="remove", description="Remove a role reward from the level system")
     @app_commands.describe(level="The level to remove the role reward from")
     @app_commands.checks.has_permissions(administrator=True)
-    async def remove_level_role(self, interaction: app_commands.Interaction, level: int):
+    async def remove_level_role(self, interaction: discord.Interaction, level: int):
        # ... (remove_level_role implementation) ...
         guild_id = str(interaction.guild.id)
         level_str = str(level)
@@ -350,7 +347,7 @@ class Leveling(commands.Cog):
         )
 
     @role_group.command(name="list", description="List all role rewards in the level system")
-    async def list_level_roles(self, interaction: app_commands.Interaction):
+    async def list_level_roles(self, interaction: discord.Interaction):
        # ... (list_level_roles implementation) ...
         guild_id = str(interaction.guild.id)
 
@@ -384,11 +381,9 @@ class Leveling(commands.Cog):
                 if role_id:
                     role = interaction.guild.get_role(int(role_id))
                     role_mention = role.mention if role else f"Unknown Role (ID: {role_id})"
-                    level_role_text += f"**Level {level_key}:** {role_mention}
-"
+                    level_role_text += f"**Level {level_key}:** {role_mention}\n"
                 else:
-                     level_role_text += f"**Level {level_key}:** Error fetching role
-"
+                     level_role_text += f"**Level {level_key}:** Error fetching role\n"
 
         embed.add_field(name="Configured Rewards", value=level_role_text, inline=False)
         await interaction.response.send_message(embed=embed)
@@ -397,7 +392,7 @@ class Leveling(commands.Cog):
     @settings_group.command(name="xprate", description="Change the XP gain rate (Admin only)")
     @app_commands.describe(min_xp="Minimum XP to award", max_xp="Maximum XP to award", cooldown="Cooldown in seconds between XP awards")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_xprate(self, interaction: app_commands.Interaction, min_xp: Optional[int] = None, max_xp: Optional[int] = None, cooldown: Optional[int] = None):
+    async def level_xprate(self, interaction: discord.Interaction, min_xp: Optional[int] = None, max_xp: Optional[int] = None, cooldown: Optional[int] = None):
        # ... (level_xprate implementation) ...
         guild_id = str(interaction.guild.id)
         if guild_id not in self.leveling_data:
@@ -457,7 +452,7 @@ class Leveling(commands.Cog):
     @settings_group.command(name="setmessage", description="Set a custom level-up message")
     @app_commands.describe(level="Level for this message (0 for default)", message="Template: {user}, {level}, {server}")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_setmessage(self, interaction: app_commands.Interaction, level: int, message: str):
+    async def level_setmessage(self, interaction: discord.Interaction, level: int, message: str):
        # ... (level_setmessage implementation) ...
         guild_id = str(interaction.guild.id)
 
@@ -488,7 +483,7 @@ class Leveling(commands.Cog):
     @settings_group.command(name="clearmessage", description="Clear a custom level-up message")
     @app_commands.describe(level="Level to clear message for (0 for default)")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_clearmessage(self, interaction: app_commands.Interaction, level: int):
+    async def level_clearmessage(self, interaction: discord.Interaction, level: int):
        # ... (level_clearmessage implementation) ...
         guild_id = str(interaction.guild.id)
         level_str = str(level)
@@ -508,7 +503,7 @@ class Leveling(commands.Cog):
 
     @settings_group.command(name="listmessages", description="List all custom level-up messages")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_listmessages(self, interaction: app_commands.Interaction):
+    async def level_listmessages(self, interaction: discord.Interaction):
        # ... (level_listmessages implementation) ...
         guild_id = str(interaction.guild.id)
 
@@ -546,7 +541,7 @@ class Leveling(commands.Cog):
     @settings_group.command(name="levelupchannel", description="Set the channel where level up messages will be sent")
     @app_commands.describe(channel="The channel for level up messages, or none to use the same channel")
     @app_commands.checks.has_permissions(administrator=True)
-    async def set_level_up_channel(self, interaction: app_commands.Interaction, channel: Optional[discord.TextChannel] = None):
+    async def set_level_up_channel(self, interaction: discord.Interaction, channel: Optional[discord.TextChannel] = None):
        # ... (set_level_up_channel implementation) ...
         guild_id = str(interaction.guild.id)
         if guild_id not in self.leveling_data:
@@ -579,7 +574,7 @@ class Leveling(commands.Cog):
     @settings_group.command(name="toggleleveling", description="Enable or disable the leveling system in this server")
     @app_commands.describe(enabled="Whether to enable (True) or disable (False) leveling")
     @app_commands.checks.has_permissions(administrator=True)
-    async def toggle_leveling(self, interaction: app_commands.Interaction, enabled: bool):
+    async def toggle_leveling(self, interaction: discord.Interaction, enabled: bool):
        # ... (toggle_leveling implementation) ...
         guild_id = str(interaction.guild.id)
         if guild_id not in self.leveling_data:
@@ -600,7 +595,7 @@ class Leveling(commands.Cog):
     @settings_group.command(name="togglemessages", description="Enable or disable level up messages")
     @app_commands.describe(enabled="Whether level up messages are enabled")
     @app_commands.checks.has_permissions(administrator=True)
-    async def toggle_level_up_messages(self, interaction: app_commands.Interaction, enabled: bool):
+    async def toggle_level_up_messages(self, interaction: discord.Interaction, enabled: bool):
        # ... (toggle_level_up_messages implementation) ...
         guild_id = str(interaction.guild.id)
         if guild_id not in self.leveling_data:
@@ -626,7 +621,7 @@ class Leveling(commands.Cog):
         # ... other theme choices ...
         app_commands.Choice(name="Gold", value="gold")
     ])
-    async def level_card(self, interaction: app_commands.Interaction, member: Optional[discord.Member] = None, theme: str = "default"):
+    async def level_card(self, interaction: discord.Interaction, member: Optional[discord.Member] = None, theme: str = "default"):
        # ... (level_card implementation) ...
         target_member = member or interaction.user
         guild_id = str(interaction.guild.id)
@@ -665,7 +660,7 @@ class Leveling(commands.Cog):
 
     @card_group.command(name="background", description="Set a custom background for your level card")
     @app_commands.describe(image_url="Image URL (PNG/JPG, <8MB). Leave empty to reset.", member="Member to set for (Admin only)")
-    async def level_setbackground(self, interaction: app_commands.Interaction, image_url: Optional[str] = None, member: Optional[discord.Member] = None):
+    async def level_setbackground(self, interaction: discord.Interaction, image_url: Optional[str] = None, member: Optional[discord.Member] = None):
        # ... (level_setbackground implementation) ...
         target_member = member or interaction.user
         is_admin_setting_for_other = member and member != interaction.user
@@ -742,7 +737,7 @@ class Leveling(commands.Cog):
 
     @card_group.command(name="resetbackgrounds", description="Reset all custom backgrounds (Admin only)")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_resetbackgrounds(self, interaction: app_commands.Interaction):
+    async def level_resetbackgrounds(self, interaction: discord.Interaction):
        # ... (level_resetbackgrounds implementation) ...
         guild_id = str(interaction.guild.id)
         if guild_id in self.background_images and self.background_images[guild_id]:
@@ -756,7 +751,7 @@ class Leveling(commands.Cog):
     # --- Advanced Subcommands (/level advanced ...) ---
     @advanced_group.command(name="topleaderboard", description="Show a visual leaderboard of top members")
     @app_commands.describe(page="The page of the leaderboard to show", theme="The theme to use for the leaderboard")
-    async def level_topleaderboard(self, interaction: app_commands.Interaction, page: int = 1, theme: str = "default"):
+    async def level_topleaderboard(self, interaction: discord.Interaction, page: int = 1, theme: str = "default"):
        # ... (level_topleaderboard implementation) ...
         guild_id = str(interaction.guild.id)
 
@@ -786,7 +781,7 @@ class Leveling(commands.Cog):
     @advanced_group.command(name="resetuser", description="Reset a user's level and XP")
     @app_commands.describe(member="The member to reset")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_resetuser(self, interaction: app_commands.Interaction, member: discord.Member):
+    async def level_resetuser(self, interaction: discord.Interaction, member: discord.Member):
        # ... (level_resetuser implementation) ...
         guild_id = str(interaction.guild.id)
         user_id = str(member.id)
@@ -813,7 +808,7 @@ class Leveling(commands.Cog):
 
     @advanced_group.command(name="resetall", description="Reset all levels and XP (dangerous!)")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_resetall(self, interaction: app_commands.Interaction):
+    async def level_resetall(self, interaction: discord.Interaction):
        # ... (level_resetall implementation) ...
         guild_id = str(interaction.guild.id)
         confirm_view = ConfirmView(interaction.user.id)
@@ -844,7 +839,7 @@ Reset **ALL** leveling data (XP, roles, settings) for **{interaction.guild.name}
 
     @advanced_group.command(name="syncfonts", description="Sync font files for level cards")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_syncfonts(self, interaction: app_commands.Interaction):
+    async def level_syncfonts(self, interaction: discord.Interaction):
        # ... (level_syncfonts implementation) ...
         await interaction.response.defer(ephemeral=True)
         fonts = [
@@ -871,7 +866,7 @@ Reset **ALL** leveling data (XP, roles, settings) for **{interaction.guild.name}
 
     @advanced_group.command(name="resetcards", description="Reset all level cards to default style")
     @app_commands.checks.has_permissions(administrator=True)
-    async def level_resetcards(self, interaction: app_commands.Interaction):
+    async def level_resetcards(self, interaction: discord.Interaction):
        # ... (level_resetcards implementation) ...
         guild_id = str(interaction.guild.id)
         confirm_view = ConfirmView(interaction.user.id)
@@ -896,7 +891,7 @@ Reset **ALL** leveling data (XP, roles, settings) for **{interaction.guild.name}
 
     @advanced_group.command(name="diagnose", description="Run diagnostics on the leveling system")
     @app_commands.checks.has_permissions(administrator=True)
-    async def diagnose_leveling(self, interaction: app_commands.Interaction):
+    async def diagnose_leveling(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         issues_found, issues_fixed = 0, 0
         report = ["## Leveling System Diagnostic Report", ""]
@@ -1080,7 +1075,7 @@ Reset **ALL** leveling data (XP, roles, settings) for **{interaction.guild.name}
 
     @advanced_group.command(name="backup", description="Create a backup of all leveling data")
     @app_commands.checks.has_permissions(administrator=True)
-    async def backup_leveling(self, interaction: app_commands.Interaction):
+    async def backup_leveling(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         guild_id = str(interaction.guild.id)
         try:
@@ -1322,14 +1317,14 @@ class ConfirmView(discord.ui.View):
         self.user_id = user_id
         self._interaction = None # Store interaction for editing on timeout
 
-    async def interaction_check(self, interaction: app_commands.Interaction) -> bool:
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user.id != self.user_id:
             await interaction.response.send_message("This confirmation is not for you.", ephemeral=True)
             return False
         self._interaction = interaction # Store the interaction that passed the check
         return True
 
-    async def _disable_and_edit(self, interaction: app_commands.Interaction, content: str):
+    async def _disable_and_edit(self, interaction: discord.Interaction, content: str):
         for item in self.children:
             item.disabled = True
         try:
@@ -1343,13 +1338,13 @@ class ConfirmView(discord.ui.View):
              logger.warning(f"Error editing confirmation message: {e}")
 
     @discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
-    async def confirm(self, interaction: app_commands.Interaction, button: discord.ui.Button):
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.value = True
         await self._disable_and_edit(interaction, "Confirmed. Processing...")
         self.stop()
 
     @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
-    async def cancel(self, interaction: app_commands.Interaction, button: discord.ui.Button):
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.value = False
         await self._disable_and_edit(interaction, "Operation cancelled.")
         self.stop()

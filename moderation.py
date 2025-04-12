@@ -85,7 +85,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="ban", description="Ban a member from the server")
     @app_commands.describe(member="The member to ban", reason="The reason for the ban")
     @app_commands.checks.has_permissions(ban_members=True)
-    async def ban(self, interaction: app_commands.Interaction, member: discord.Member, reason: str = "No reason provided"):
+    async def ban(self, interaction: discord.Interaction, member: discord.Member, reason: str = "No reason provided"):
         """Ban a member from the server"""
         if interaction.user.top_role <= member.top_role:
             await interaction.response.send_message("You cannot ban someone with a higher or equal role.", ephemeral=True)
@@ -109,7 +109,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="kick", description="Kick a member from the server")
     @app_commands.describe(member="The member to kick", reason="The reason for the kick")
     @app_commands.checks.has_permissions(kick_members=True)
-    async def kick(self, interaction: app_commands.Interaction, member: discord.Member, reason: str = "No reason provided"):
+    async def kick(self, interaction: discord.Interaction, member: discord.Member, reason: str = "No reason provided"):
         """Kick a member from the server"""
         if interaction.user.top_role <= member.top_role:
             await interaction.response.send_message("You cannot kick someone with a higher or equal role.", ephemeral=True)
@@ -137,7 +137,7 @@ class Moderation(commands.Cog):
         reason="The reason for the mute"
     )
     @app_commands.checks.has_permissions(manage_roles=True)
-    async def mute(self, interaction: app_commands.Interaction, member: discord.Member, duration: str = "1h", reason: str = "No reason provided"):
+    async def mute(self, interaction: discord.Interaction, member: discord.Member, duration: str = "1h", reason: str = "No reason provided"):
         """Mute a member for a specified duration"""
         if interaction.user.top_role <= member.top_role:
             await interaction.response.send_message("You cannot mute someone with a higher or equal role.", ephemeral=True)
@@ -207,7 +207,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="unmute", description="Unmute a muted member")
     @app_commands.describe(member="The member to unmute")
     @app_commands.checks.has_permissions(manage_roles=True)
-    async def unmute(self, interaction: app_commands.Interaction, member: discord.Member):
+    async def unmute(self, interaction: discord.Interaction, member: discord.Member):
         """Unmute a muted member"""
         mute_role = discord.utils.get(interaction.guild.roles, name=config.MUTE_ROLE_NAME)
         if not mute_role:
@@ -237,7 +237,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="warn", description="Warn a member")
     @app_commands.describe(member="The member to warn", reason="The reason for the warning")
     @app_commands.checks.has_permissions(manage_messages=True)
-    async def warn(self, interaction: app_commands.Interaction, member: discord.Member, reason: str = "No reason provided"):
+    async def warn(self, interaction: discord.Interaction, member: discord.Member, reason: str = "No reason provided"):
         """Warn a member"""
         if interaction.user.top_role <= member.top_role:
             await interaction.response.send_message("You cannot warn someone with a higher or equal role.", ephemeral=True)
@@ -289,7 +289,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="warnings", description="Show warnings for a member")
     @app_commands.describe(member="The member to check warnings for")
     @app_commands.checks.has_permissions(manage_messages=True)
-    async def warnings(self, interaction: app_commands.Interaction, member: discord.Member):
+    async def warnings(self, interaction: discord.Interaction, member: discord.Member):
         """Show warnings for a member"""
         guild_id = str(interaction.guild.id)
         user_id = str(member.id)
@@ -321,7 +321,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="clearwarnings", description="Clear all warnings for a member")
     @app_commands.describe(member="The member to clear warnings for")
     @app_commands.checks.has_permissions(manage_messages=True)
-    async def clearwarnings(self, interaction: app_commands.Interaction, member: discord.Member):
+    async def clearwarnings(self, interaction: discord.Interaction, member: discord.Member):
         """Clear all warnings for a member"""
         guild_id = str(interaction.guild.id)
         user_id = str(member.id)
@@ -338,7 +338,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="purge", description="Delete a specified number of messages")
     @app_commands.describe(amount="The number of messages to delete (1-100)")
     @app_commands.checks.has_permissions(manage_messages=True)
-    async def purge(self, interaction: app_commands.Interaction, amount: int):
+    async def purge(self, interaction: discord.Interaction, amount: int):
         """Delete a specified number of messages"""
         if amount <= 0 or amount > 100:
             await interaction.response.send_message("Please provide a number between 1 and 100.", ephemeral=True)

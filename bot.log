@@ -192,3 +192,76 @@ client_session: <aiohttp.client.ClientSession object at 0x000001F954E01550>
 2025-03-09 14:19:07,496 - bot - INFO - Joined guild: AIADS batch 2024 (ID: 1308080383954391121)
 2025-03-09 14:19:08,615 - bot - INFO - Synced slash commands for guild 1308080383954391121
 2025-03-09 14:31:40,416 - bot - INFO - Bot stopped by user.
+2025-04-13 01:36:45,300 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-13 01:36:45,306 - discord.client - INFO - logging in using static token
+2025-04-13 01:36:46,834 - bot - ERROR - Failed to load extension moderation: Extension 'moderation' raised an error: AttributeError: module 'discord.app_commands' has no attribute 'Interaction'
+2025-04-13 01:36:47,222 - bot - ERROR - Failed to load extension autorole: Extension 'autorole' raised an error: AttributeError: module 'discord.app_commands' has no attribute 'Interaction'
+2025-04-13 01:36:50,842 - bot - ERROR - Failed to load extension aichat: Extension 'aichat' raised an error: AttributeError: module 'discord.app_commands' has no attribute 'Interaction'
+2025-04-13 01:36:50,912 - bot - ERROR - Failed to load extension utility: Extension 'utility' raised an error: AttributeError: module 'discord.app_commands' has no attribute 'Interaction'
+2025-04-13 01:36:50,938 - bot - ERROR - Failed to load extension leveling: Extension 'leveling' raised an error: SyntaxError: unterminated f-string literal (detected at line 179) (leveling.py, line 179)
+2025-04-13 01:36:51,005 - bot - ERROR - Failed to load extension reactionroles: Extension 'reactionroles' raised an error: AttributeError: module 'discord.app_commands' has no attribute 'Interaction'
+2025-04-13 01:36:51,006 - bot - INFO - Syncing slash commands...
+2025-04-13 01:36:51,621 - bot - INFO - Slash commands synced
+2025-04-13 01:36:52,716 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 93973520e2c77d3d3e665c89e26602f8).
+2025-04-13 01:36:54,819 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-13 01:36:54,820 - bot - INFO - Bot is ready! Serving 4 guilds.
+2025-04-13 01:40:47,423 - bot - INFO - Bot stopped by user.
+2025-04-13 01:40:52,004 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-13 01:40:52,007 - discord.client - INFO - logging in using static token
+2025-04-13 01:40:53,393 - bot - INFO - Loaded extension: moderation
+2025-04-13 01:40:53,684 - bot - INFO - Loaded extension: autorole
+2025-04-13 01:40:58,582 - bot - INFO - Loaded extension: aichat
+2025-04-13 01:40:58,667 - bot - INFO - Loaded extension: utility
+2025-04-13 01:40:58,700 - bot - ERROR - Failed to load extension leveling: Extension 'leveling' raised an error: SyntaxError: unterminated f-string literal (detected at line 476) (leveling.py, line 476)
+2025-04-13 01:40:58,782 - bot - INFO - Loaded extension: reactionroles
+2025-04-13 01:40:58,783 - bot - INFO - Syncing slash commands...
+2025-04-13 01:41:58,281 - bot - INFO - Slash commands synced
+2025-04-13 01:41:59,262 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 1fdcd19edf9aae779458f84661735b6c).
+2025-04-13 01:42:01,581 - bot - INFO - Registering persistent reaction role views...
+2025-04-13 01:42:01,582 - bot - INFO - Registered 0 persistent reaction role views.
+2025-04-13 01:42:01,582 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-13 01:42:01,583 - bot - INFO - Bot is ready! Serving 4 guilds.
+2025-04-13 01:42:18,611 - bot - INFO - Bot stopped by user.
+2025-04-13 01:43:48,443 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-13 01:43:48,450 - discord.client - INFO - logging in using static token
+2025-04-13 01:43:49,824 - bot - INFO - Loaded extension: moderation
+2025-04-13 01:43:50,111 - bot - INFO - Loaded extension: autorole
+2025-04-13 01:43:55,740 - bot - INFO - Loaded extension: aichat
+2025-04-13 01:43:55,804 - bot - INFO - Loaded extension: utility
+2025-04-13 01:43:55,823 - bot - ERROR - Failed to load extension leveling: Extension 'leveling' raised an error: SyntaxError: unterminated f-string literal (detected at line 476) (leveling.py, line 476)
+2025-04-13 01:43:55,849 - bot - INFO - Loaded extension: reactionroles
+2025-04-13 01:43:55,850 - bot - INFO - Syncing slash commands...
+2025-04-13 01:44:56,051 - bot - INFO - Slash commands synced
+2025-04-13 01:44:57,195 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 979737b37a9210e2e67ee29014eb5edb).
+2025-04-13 01:44:59,470 - bot - INFO - Registering persistent reaction role views...
+2025-04-13 01:44:59,471 - bot - INFO - Registered 0 persistent reaction role views.
+2025-04-13 01:44:59,471 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-13 01:44:59,472 - bot - INFO - Bot is ready! Serving 4 guilds.
+2025-04-13 01:46:56,678 - discord.app_commands.tree - ERROR - Ignoring exception in command 'roleall'
+Traceback (most recent call last):
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\discord\app_commands\commands.py", line 857, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\codeprojects\new discord bot\autorole.py", line 176, in roleall
+    await interaction.response.defer()
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\discord\interactions.py", line 844, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\discord\webhook\async_.py", line 226, in request
+    raise HTTPException(response, data)
+discord.errors.HTTPException: 400 Bad Request (error code: 40060): Interaction has already been acknowledged.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\discord\app_commands\tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\discord\app_commands\commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\discord\app_commands\commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'roleall' raised an exception: HTTPException: 400 Bad Request (error code: 40060): Interaction has already been acknowledged.

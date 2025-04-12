@@ -114,7 +114,7 @@ class AutoRole(commands.Cog):
     @app_commands.command(name="setautorole", description="Set a role to be automatically assigned to new members")
     @app_commands.describe(role="The role to automatically assign to new members")
     @app_commands.checks.has_permissions(administrator=True)
-    async def setautorole(self, interaction: app_commands.Interaction, role: discord.Role):
+    async def setautorole(self, interaction: discord.Interaction, role: discord.Role):
         """Set the auto-role for this server"""
         if role.position >= interaction.guild.me.top_role.position:
             await interaction.response.send_message("I cannot assign a role that is higher than or equal to my highest role.", ephemeral=True)
@@ -128,7 +128,7 @@ class AutoRole(commands.Cog):
     
     @app_commands.command(name="removeautorole", description="Remove the auto-role for this server")
     @app_commands.checks.has_permissions(administrator=True)
-    async def removeautorole(self, interaction: app_commands.Interaction):
+    async def removeautorole(self, interaction: discord.Interaction):
         """Remove the auto-role for this server"""
         guild_id = str(interaction.guild.id)
         
@@ -141,7 +141,7 @@ class AutoRole(commands.Cog):
     
     @app_commands.command(name="getautorole", description="Show the current auto-role for this server")
     @app_commands.checks.has_permissions(administrator=True)
-    async def getautorole(self, interaction: app_commands.Interaction):
+    async def getautorole(self, interaction: discord.Interaction):
         """Get the current auto-role for this server"""
         guild_id = str(interaction.guild.id)
         
@@ -167,7 +167,7 @@ class AutoRole(commands.Cog):
     @app_commands.command(name="roleall", description="Apply a role to all current members")
     @app_commands.describe(role="The role to apply to all members")
     @app_commands.checks.has_permissions(administrator=True)
-    async def roleall(self, interaction: app_commands.Interaction, role: discord.Role):
+    async def roleall(self, interaction: discord.Interaction, role: discord.Role):
         """Assign a role to all members in the server"""
         if role.position >= interaction.guild.me.top_role.position:
             await interaction.response.send_message("I cannot assign a role that is higher than or equal to my highest role.", ephemeral=True)

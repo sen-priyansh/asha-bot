@@ -11,7 +11,7 @@ class Utility(commands.Cog):
         self.bot = bot
     
     @app_commands.command(name="ping", description="Check the bot's latency")
-    async def ping(self, interaction: app_commands.Interaction):
+    async def ping(self, interaction: discord.Interaction):
         """Check the bot's latency"""
         start_time = time.time()
         await interaction.response.defer()
@@ -30,7 +30,7 @@ class Utility(commands.Cog):
         await interaction.followup.send(embed=embed)
     
     @app_commands.command(name="botinfo", description="Display information about the bot")
-    async def botinfo(self, interaction: app_commands.Interaction):
+    async def botinfo(self, interaction: discord.Interaction):
         """Display information about the bot"""
         # Get bot information
         bot_version = "1.0.0"
@@ -70,7 +70,7 @@ class Utility(commands.Cog):
         await interaction.response.send_message(embed=embed)
     
     @app_commands.command(name="serverinfo", description="Display information about the server")
-    async def serverinfo(self, interaction: app_commands.Interaction):
+    async def serverinfo(self, interaction: discord.Interaction):
         """Display information about the server"""
         guild = interaction.guild
         
@@ -120,7 +120,7 @@ class Utility(commands.Cog):
     
     @app_commands.command(name="userinfo", description="Display information about a user")
     @app_commands.describe(member="The user to get information about (leave empty for yourself)")
-    async def userinfo(self, interaction: app_commands.Interaction, member: discord.Member = None):
+    async def userinfo(self, interaction: discord.Interaction, member: discord.Member = None):
         """Display information about a user"""
         member = member or interaction.user
         
@@ -155,7 +155,7 @@ class Utility(commands.Cog):
     
     @app_commands.command(name="help", description="Display help information")
     @app_commands.describe(command="The command to get help for")
-    async def help(self, interaction: app_commands.Interaction, command: str = None):
+    async def help(self, interaction: discord.Interaction, command: str = None):
         """Display help information"""
         if command is None:
             # Create main help embed
@@ -215,7 +215,7 @@ class Utility(commands.Cog):
 
     @app_commands.command(name="sync", description="Sync bot commands with Discord")
     @app_commands.checks.has_permissions(administrator=True)
-    async def sync(self, interaction: app_commands.Interaction):
+    async def sync(self, interaction: discord.Interaction):
         """Sync slash commands with Discord"""
         await interaction.response.defer(ephemeral=True)
         

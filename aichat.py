@@ -11,7 +11,7 @@ class AIChat(commands.Cog):
         self.chat_channels = {}  # {channel_id: is_active}
     
     @app_commands.command(name="chat", description="Chat with the AI using Gemini API")
-    async def chat(self, interaction: app_commands.Interaction, message: str):
+    async def chat(self, interaction: discord.Interaction, message: str):
         """Chat with the AI using Gemini API"""
         await interaction.response.defer()
         
@@ -32,7 +32,7 @@ class AIChat(commands.Cog):
             await interaction.followup.send(f"Error: {str(e)}")
     
     @app_commands.command(name="resetchat", description="Reset your chat history with the AI")
-    async def resetchat(self, interaction: app_commands.Interaction):
+    async def resetchat(self, interaction: discord.Interaction):
         """Reset your chat history with the AI"""
         success = self.gemini.reset_chat(str(interaction.user.id))
         
@@ -43,7 +43,7 @@ class AIChat(commands.Cog):
     
     @app_commands.command(name="toggleaichannel", description="Toggle AI chat for the current channel")
     @app_commands.checks.has_permissions(manage_channels=True)
-    async def toggleaichannel(self, interaction: app_commands.Interaction):
+    async def toggleaichannel(self, interaction: discord.Interaction):
         """Toggle AI chat for the current channel"""
         channel_id = str(interaction.channel.id)
         
