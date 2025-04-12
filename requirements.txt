@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 discord.py>=2.0.0
 python-dotenv>=0.19.0
 google-generativeai>=0.3.0
@@ -5,3 +6,11 @@ asyncio==3.4.3
 psutil==5.9.5
 aiohttp
 Pillow>=10.0.0 
+=======
+discord.py==2.3.2
+python-dotenv==1.0.0
+google-generativeai==0.3.1
+asyncio==3.4.3
+psutil==5.9.5
+aiohttp==3.9.1 
+>>>>>>> 44e936231a0b3957b83abb07b289eb46086b7d22
