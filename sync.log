@@ -1,0 +1,117 @@
+2025-04-10 16:20:41,273 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-10 16:20:41,275 - discord.client - INFO - logging in using static token
+2025-04-10 16:20:41,276 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-10 16:20:43,749 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 90d08e3a97c379aa2de5bd2c84f45fd4).
+2025-04-10 16:20:45,831 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-10 16:20:45,832 - sync - INFO - Bot is ready! Serving 3 guilds.
+2025-04-10 16:20:45,832 - sync - INFO - Syncing commands globally
+2025-04-10 16:20:46,441 - sync - INFO - Successfully synced commands globally
+2025-04-10 16:20:46,444 - sync - INFO - Syncing commands for each guild
+2025-04-10 16:20:47,055 - sync - INFO - Successfully synced commands for guild Test server
+2025-04-10 16:20:47,521 - sync - INFO - Successfully synced commands for guild AIADS batch 2024
+2025-04-10 16:20:48,115 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000001C7E871F0B0>, 51261.932873)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000001C7E8750EC0>
+2025-04-10 16:26:39,601 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-10 16:26:39,604 - discord.client - INFO - logging in using static token
+2025-04-10 16:26:39,604 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-10 16:26:41,966 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: b2541507831bf38a0652b9893d81e64c).
+2025-04-10 16:26:44,192 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-10 16:26:44,192 - sync - INFO - Bot is ready! Serving 3 guilds.
+2025-04-10 16:26:44,193 - sync - INFO - Syncing commands globally
+2025-04-10 16:26:44,735 - sync - INFO - Successfully synced commands globally
+2025-04-10 16:26:44,736 - sync - INFO - Syncing commands for each guild
+2025-04-10 16:26:45,166 - sync - INFO - Successfully synced commands for guild Test server
+2025-04-10 16:26:45,659 - sync - INFO - Successfully synced commands for guild AIADS batch 2024
+2025-04-10 16:26:46,192 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000001193A1BF0B0>, 51620.036291)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000001193A1F0EC0>
+2025-04-10 16:30:18,158 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-10 16:30:18,160 - discord.client - INFO - logging in using static token
+2025-04-10 16:30:18,161 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-10 16:30:20,640 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 677bda42636f38c5d5c4ab991925bc57).
+2025-04-10 16:30:22,669 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-10 16:30:22,670 - sync - INFO - Bot is ready! Serving 3 guilds.
+2025-04-10 16:30:22,670 - sync - INFO - Syncing commands globally
+2025-04-10 16:30:23,242 - sync - INFO - Successfully synced commands globally
+2025-04-10 16:30:23,242 - sync - INFO - Syncing commands for each guild
+2025-04-10 16:30:23,777 - sync - INFO - Successfully synced commands for guild Test server
+2025-04-10 16:30:24,217 - sync - INFO - Successfully synced commands for guild AIADS batch 2024
+2025-04-10 16:30:24,823 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000001E307B7F0B0>, 51838.6540203)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000001E307BB0EC0>
+2025-04-10 16:49:32,072 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-10 16:49:32,075 - discord.client - INFO - logging in using static token
+2025-04-10 16:49:32,075 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-10 16:49:34,991 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 0a33c9a91e9c7b41dc259d3d3c39cbc4).
+2025-04-10 16:49:37,009 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-10 16:49:37,010 - sync - INFO - Bot is ready! Serving 3 guilds.
+2025-04-10 16:49:37,010 - sync - INFO - Syncing commands globally
+2025-04-10 16:49:37,868 - sync - INFO - Successfully synced commands globally
+2025-04-10 16:49:37,869 - sync - INFO - Syncing commands for each guild
+2025-04-10 16:49:38,371 - sync - INFO - Successfully synced commands for guild Test server
+2025-04-10 16:49:39,021 - sync - INFO - Successfully synced commands for guild AIADS batch 2024
+2025-04-10 16:49:39,790 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x0000018219ACF170>, 52993.6061409)])']
+connector: <aiohttp.connector.TCPConnector object at 0x0000018219B00EC0>
+2025-04-10 16:52:11,849 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-10 16:52:11,852 - discord.client - INFO - logging in using static token
+2025-04-10 16:52:11,853 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-10 16:52:15,354 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 436453d00c8073555912a8469e05815b).
+2025-04-10 16:52:17,364 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-10 16:52:17,365 - sync - INFO - Bot is ready! Serving 3 guilds.
+2025-04-10 16:52:17,365 - sync - INFO - Syncing commands globally
+2025-04-10 16:52:17,950 - sync - INFO - Successfully synced commands globally
+2025-04-10 16:52:17,951 - sync - INFO - Syncing commands for each guild
+2025-04-10 16:52:18,632 - sync - INFO - Successfully synced commands for guild 'Test server'
+2025-04-10 16:52:19,165 - sync - INFO - Successfully synced commands for guild 'AIADS batch 2024'
+2025-04-10 16:52:19,757 - sync - INFO - Successfully synced commands for guild '🐇 Bᥙᥒᥒᥡ .×͜×.'
+2025-04-10 16:52:19,800 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x00000236C670F0B0>, 53153.6605154)])']
+connector: <aiohttp.connector.TCPConnector object at 0x00000236C6744D70>
+2025-04-10 17:14:20,029 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-10 17:14:20,032 - discord.client - INFO - logging in using static token
+2025-04-10 17:14:20,033 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-10 17:14:23,624 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: aced93f04867f5cec2011a1f8d080fe2).
+2025-04-10 17:14:25,636 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-10 17:14:25,637 - sync - INFO - Bot is ready! Serving 3 guilds.
+2025-04-10 17:14:25,637 - sync - INFO - Syncing commands globally
+2025-04-10 17:14:26,399 - sync - INFO - Successfully synced commands globally
+2025-04-10 17:14:26,399 - sync - INFO - Syncing commands for each guild
+2025-04-10 17:14:27,002 - sync - INFO - Successfully synced commands for guild 'Test server'
+2025-04-10 17:14:27,618 - sync - INFO - Successfully synced commands for guild 'AIADS batch 2024'
+2025-04-10 17:14:28,131 - sync - INFO - Successfully synced commands for guild '🐇 Bᥙᥒᥒᥡ .×͜×.'
+2025-04-10 17:14:28,180 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000001CBB63BF0B0>, 54482.0344024)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000001CBB63F4D70>
+2025-04-10 17:45:10,811 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-10 17:45:10,814 - discord.client - INFO - logging in using static token
+2025-04-10 17:45:10,814 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-10 17:45:14,250 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 3b4507aa4d9e65d2e1be5b2d3f5e406e).
+2025-04-10 17:45:16,272 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-10 17:45:16,273 - sync - INFO - Bot is ready! Serving 3 guilds.
+2025-04-10 17:45:16,274 - sync - INFO - Syncing commands globally
+2025-04-10 17:45:16,948 - sync - INFO - Successfully synced commands globally
+2025-04-10 17:45:16,949 - sync - INFO - Syncing commands for each guild
+2025-04-10 17:45:17,698 - sync - INFO - Successfully synced commands for guild 'Test server'
+2025-04-10 17:45:18,552 - sync - INFO - Successfully synced commands for guild 'AIADS batch 2024'
+2025-04-10 17:45:19,268 - sync - INFO - Successfully synced commands for guild '🐇 Bᥙᥒᥒᥡ .×͜×.'
+2025-04-10 17:45:19,335 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x00000234C71BF170>, 56333.1715548)])']
+connector: <aiohttp.connector.TCPConnector object at 0x00000234C71F4D70>
+2025-04-11 12:57:07,231 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-04-11 12:57:07,237 - discord.client - INFO - logging in using static token
+2025-04-11 12:57:07,237 - discord.ext.commands.bot - WARNING - Privileged message content intent is missing, commands may not work as expected.
+2025-04-11 12:57:09,349 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 00a833add45797a5d7e7ed57872d59a1).
+2025-04-11 12:57:11,568 - sync - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-04-11 12:57:11,568 - sync - INFO - Bot is ready! Serving 4 guilds.
+2025-04-11 12:57:11,568 - sync - INFO - Syncing commands globally
+2025-04-11 12:57:12,217 - sync - INFO - Successfully synced commands globally
+2025-04-11 12:57:12,217 - sync - INFO - Syncing commands for each guild
+2025-04-11 12:57:12,643 - sync - INFO - Successfully synced commands for guild 'Test server'
+2025-04-11 12:57:13,287 - sync - INFO - Successfully synced commands for guild 'AIADS batch 2024'
+2025-04-11 12:57:13,764 - sync - INFO - Successfully synced commands for guild '🐇 Bᥙᥒᥒᥡ ×͜×.'
+2025-04-11 12:57:14,190 - sync - INFO - Successfully synced commands for guild '🐇 Bᥙᥒᥒᥡ .×͜×.'
+2025-04-11 12:57:14,212 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000001BA2AC0F110>, 1674.0295492)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000001BA2AC44D70>
