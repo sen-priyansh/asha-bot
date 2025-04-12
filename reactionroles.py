@@ -83,7 +83,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def reaction_create(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         title: str, 
         description: str, 
         channel: discord.TextChannel, 
@@ -171,7 +171,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     )
     async def add_reaction_role(
         self,
-        interaction: discord.Interaction,
+        interaction: app_commands.Interaction,
         message_id: str,
         emoji: str,
         role: discord.Role
@@ -209,7 +209,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def reaction_remove(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         emoji: str
     ):
@@ -270,7 +270,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     
     @app_commands.command(name="list", description="List all reaction roles in the server")
     @app_commands.checks.has_permissions(manage_roles=True)
-    async def reaction_list(self, interaction: discord.Interaction):
+    async def reaction_list(self, interaction: app_commands.Interaction):
         """List all reaction roles in the server"""
         guild_id = str(interaction.guild.id)
         
@@ -316,7 +316,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def reaction_settings(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         max_roles: Optional[int] = None,
         required_role: Optional[discord.Role] = None
@@ -365,7 +365,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def reaction_edit(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         title: Optional[str] = None,
         description: Optional[str] = None,
@@ -684,7 +684,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
             
     @app_commands.command(name="verify", description="Verify all reaction role configurations and fix any issues")
     @app_commands.checks.has_permissions(administrator=True)
-    async def reaction_verify(self, interaction: discord.Interaction):
+    async def reaction_verify(self, interaction: app_commands.Interaction):
         """Verify all reaction role configurations and fix any issues"""
         guild_id = str(interaction.guild.id)
         
@@ -876,7 +876,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
 
     @app_commands.command(name="rebuild", description="Rebuild and fix all reaction role messages")
     @app_commands.checks.has_permissions(administrator=True)
-    async def reaction_rebuild(self, interaction: discord.Interaction):
+    async def reaction_rebuild(self, interaction: app_commands.Interaction):
         """Rebuild all reaction role messages in the server"""
         guild_id = str(interaction.guild.id)
         
@@ -977,7 +977,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def reaction_clone(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         channel: discord.TextChannel
     ):
@@ -1121,7 +1121,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
 
     @app_commands.command(name="cleanup", description="Clean up invalid reaction role entries")
     @app_commands.checks.has_permissions(administrator=True)
-    async def reaction_cleanup(self, interaction: discord.Interaction):
+    async def reaction_cleanup(self, interaction: app_commands.Interaction):
         """Clean up invalid reaction role entries"""
         guild_id = str(interaction.guild.id)
         
@@ -1217,7 +1217,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
 
     @app_commands.command(name="export", description="Export reaction roles configuration")
     @app_commands.checks.has_permissions(administrator=True)
-    async def reaction_export(self, interaction: discord.Interaction):
+    async def reaction_export(self, interaction: app_commands.Interaction):
         """Export reaction roles configuration for backup"""
         guild_id = str(interaction.guild.id)
         
@@ -1258,7 +1258,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def create_menu(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         title: str, 
         description: str, 
         channel: discord.TextChannel, 
@@ -1338,7 +1338,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def add_category(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         category_name: str,
         description: Optional[str] = None,
@@ -1414,7 +1414,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def add_menu_role(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         category_name: str,
         role: discord.Role,
@@ -1593,7 +1593,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def remove_menu_role(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         role: discord.Role
     ):
@@ -1661,7 +1661,7 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
     @app_commands.checks.has_permissions(manage_roles=True)
     async def remove_category(
         self, 
-        interaction: discord.Interaction, 
+        interaction: app_commands.Interaction, 
         message_id: str, 
         category_name: str
     ):
@@ -1727,7 +1727,7 @@ class RoleButton(discord.ui.Button):
         self.mode = mode
         self.cog = cog
     
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: app_commands.Interaction):
         """Called when the button is clicked"""
         if interaction.guild_id != int(self.guild_id):
             return
@@ -1865,7 +1865,7 @@ class RoleSelectMenu(discord.ui.Select):
             custom_id=f"menu_{message_id}_{category_id}"
         )
     
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: app_commands.Interaction):
         """Handle role selection"""
         if str(interaction.guild_id) != self.guild_id:
             return
