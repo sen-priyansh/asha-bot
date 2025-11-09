@@ -1,167 +1,110 @@
-<<<<<<< HEAD
-# Discord Bot
+# Asha Discord Bot
 
-A feature-rich Discord bot with moderation, leveling, reaction roles, and utility commands.
+Feature-rich Discord bot with moderation, leveling, reaction roles, AI chat (Gemini), and utility commands.
 
-## Features
+## ✨ Core Features
 
-### 1. Moderation Commands
-- `/moderation ban` - Ban a member from the server
-- `/moderation kick` - Kick a member from the server
-- `/moderation mute` - Mute a member for a specified duration
-- `/moderation unmute` - Unmute a muted member
-- `/moderation warn` - Warn a member
-- `/moderation warnings` - View a member's warnings
-- `/moderation clearwarnings` - Clear all warnings for a member
-- `/moderation purge` - Delete multiple messages from a channel
-
-### 2. Leveling System
-- `/level check` - Check your or another user's level
-- `/level leaderboard` - View the server's XP leaderboard
-- `/level admin setxp` - Set a user's XP (Admin only)
-- `/level admin addxp` - Add XP to a user (Admin only)
-- `/level role set` - Set a role to be assigned at a specific level
-- `/level role remove` - Remove a role from being assigned at a level
-- `/level settings xprate` - Configure XP gain settings
-
-### 3. Reaction Roles
-- `/reaction create` - Create a reaction role message
-- `/reaction add` - Add a reaction role to a message
-- `/reaction remove` - Remove a reaction role from a message
-- `/reaction list` - List all reaction roles in the server
-- `/reaction settings` - Configure reaction role settings
-- `/reaction edit` - Edit a reaction role message
-- `/reaction verify` - Verify and fix reaction role configurations
-- `/reaction rebuild` - Rebuild all reaction role messages
-- `/reaction clone` - Clone a reaction role message to another channel
-- `/reaction cleanup` - Clean up invalid reaction role entries
-- `/reaction export` - Export reaction roles configuration
-
-### 4. Utility Commands
-- `/utility ping` - Check the bot's latency
-- `/utility botinfo` - Display information about the bot
-- `/utility serverinfo` - Display information about the server
-- `/utility userinfo` - Display information about a user
-- `/utility help` - Display help information
-
-## Setup
-
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Create a `.env` file with your bot token:
-   ```
-   TOKEN=your_bot_token_here
-   ```
-4. Run the bot:
-   ```bash
-   python bot.py
-   ```
-
-## Configuration
-
-### Bot Permissions
-The bot requires the following permissions:
-- Manage Roles
-- Manage Messages
-- Ban Members
-- Kick Members
-- Send Messages
-- Embed Links
-- Add Reactions
-- Read Message History
-
-### Required Intents
-- Server Members Intent
-- Message Content Intent
-- Presence Intent
-
-## Features in Detail
-
-### Moderation System
-The moderation system provides comprehensive tools for server management:
-- Automatic mute role creation and management
-- Warning system with persistent storage
-- Configurable mute durations
-- Bulk message deletion with user filtering
+### Moderation
+`/ban`, `/kick`, `/mute`, `/unmute`, `/warn`, `/warnings`, `/clearwarnings`, `/purge`
 
 ### Leveling System
-The leveling system includes:
-- Automatic XP gain from messages
-- Configurable XP rates and cooldowns
-- Level-based role rewards
-- Customizable level-up messages
-- Server-wide leaderboard
+Automatic XP from messages, level-based role rewards, custom level-up messages, rich diagnostics, backups, image cards.
+
+Key commands:
+`/level check` – View your (or another user's) level
+`/level leaderboard` – Text leaderboard
+`/level card show` – Image level card
+`/level admin setxp | addxp | setlevel` – Admin XP/level management
+`/level role add | remove | list` – Configure role rewards
+`/level settings xprate` – Adjust XP min/max & cooldown
+`/level settings setmessage | clearmessage | listmessages` – Manage level-up messages
+`/level settings levelupchannel` – Set a dedicated announcement channel
+`/level settings toggleleveling` – Enable/disable leveling globally
+`/level settings togglemessages` – Enable/disable level-up announcements
+`/level card background | resetbackgrounds` – Per-user card background images
+`/level advanced topleaderboard` – Image leaderboard
+`/level advanced resetuser | resetall` – Dangerous reset operations (with confirmation)
+`/level advanced diagnose` – Auto-fix & report issues
+`/level advanced backup` – Export structured JSON backup
+`/level advanced syncfonts` – Download fonts for better card rendering
+`/level advanced resetcards` – Remove all custom backgrounds
 
 ### Reaction Roles
-Advanced reaction role system with:
-- Multiple role assignment modes (normal, unique, exclusive)
-- Role limits and requirements
-- Customizable embeds
-- Persistent button views
-- Category-based role menus
-- Export/import functionality
+Create reaction/button role messages and configure limits/requirements.
+`/reaction create`, `/reaction add`, `/reaction remove`, `/reaction list`, `/reaction settings`, `/reaction edit`
 
-### Utility Features
-Various utility commands for:
-- Server information
-- User information
-- Bot statistics
-- Help documentation
+### Utility & System
+`/ping`, `/botinfo`, `/serverinfo`, `/userinfo`, `/help`, `/sync`
 
-## Support
+### AI Chat (Gemini)
+Configured via `GEMINI_API_KEY` for chat/response features (see `aichat.py`).
 
-For support, please open an issue in the repository or contact the bot owner.
+## 🛠 Setup
+```bash
+git clone <repo_url>
+cd asha-bot
+python -m venv .venv
+./.venv/Scripts/Activate.ps1  # PowerShell (Windows)
+pip install -r requirements.txt
+```
 
-## License
+Create a `.env` file:
+```
+DISCORD_TOKEN=your_bot_token
+GEMINI_API_KEY=your_gemini_api_key   # optional unless using AI chat
+OWNER_ID=your_user_id_numeric
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
-=======
-# Discord Moderation Bot with Gemini AI
+Run:
+```bash
+python bot.py
+```
 
-A Discord bot that provides moderation capabilities, auto-role assignment, and AI-powered chat using Google's Gemini API.
+## 🔑 Required Privileged Intents
+Enable in the Discord Developer Portal:
+- Server Members Intent
+- Message Content Intent
+- (Presence Intent optional)
 
-## Features
+## 🧪 Leveling Formula
+Total XP for level L: `5*L^2 + 50*L + 100`.
+XP gain per message: random between configured `min_xp` and `max_xp` after cooldown.
 
-- **Moderation Commands**: Ban, kick, mute, and warn users
-- **Auto-Role Assignment**: Automatically assign roles to new members
-- **AI Chat**: Chat with the bot using Google's Gemini API
-- **Utility Commands**: Help, ping, and other utility commands
+## 🖼 Level Cards & Leaderboard Images
+Uses Pillow; run `/level advanced syncfonts` for better typography. Supports custom backgrounds (PNG/JPG/WEBP < 8MB).
 
-## Setup
+## 🔒 Permissions Needed
+- Manage Roles (role rewards, moderation)
+- Manage Messages (purge, warn checks)
+- Send Messages / Embed Links / Add Reactions
+- Read Message History
 
-1. Clone this repository
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Create a `.env` file in the root directory with the following variables:
-   ```
-   DISCORD_TOKEN=your_discord_bot_token
-   GEMINI_API_KEY=your_gemini_api_key
-   ```
-4. Run the bot:
-   ```
-   python bot.py
-   ```
+## 💾 Persistence
+JSON files in root:
+- `leveling.json`, `level_roles.json`, `level_messages.json`, `level_backgrounds.json`, `leveling_settings.json`
+- `reaction_roles.json`
+Periodic autosave tasks run every 5 minutes.
 
-## Commands
+## 🩺 Diagnostics
+Use `/level advanced diagnose` to auto-detect & fix malformed data (missing roles, orphaned users, invalid channels).
 
-- `!help` - Display help information
-- `!ping` - Check if the bot is online
-- `!ban @user [reason]` - Ban a user
-- `!kick @user [reason]` - Kick a user
-- `!mute @user [duration] [reason]` - Mute a user
-- `!warn @user [reason]` - Warn a user
-- `!chat [message]` - Chat with the AI
+## 🚨 Resets
+`/level advanced resetuser` (single user) and `/level advanced resetall` (entire server) have confirmation prompts. Irreversible.
 
-## Auto-Role Configuration
+## 📤 Backups
+`/level advanced backup` exports a versioned JSON snapshot (safe to store externally).
 
-Edit the `config.py` file to set up auto-roles for your server.
+## 🤖 AI Chat
+Requires valid Gemini API key. Configure model & parameters in `config.py`.
 
-## License
+## 🪲 Troubleshooting
+- Token NoneType error → Check `.env` naming (`DISCORD_TOKEN`).
+- Privileged intents error → Enable intents in portal.
+- Font rendering fallback → Run `/level advanced syncfonts`.
+- Image card errors → Ensure Pillow installed & background URL accessible.
 
-MIT 
->>>>>>> 44e936231a0b3957b83abb07b289eb46086b7d22
+## 📄 License
+MIT
+
+---
+Contributions & feature requests welcome. Feel free to open issues for enhancements or bug reports.

@@ -5,6 +5,7 @@ import time
 import platform
 import psutil
 import config
+from typing import List, Tuple
 
 class Utility(commands.Cog):
     def __init__(self, bot):
@@ -156,62 +157,112 @@ class Utility(commands.Cog):
     @app_commands.command(name="help", description="Display help information")
     @app_commands.describe(command="The command to get help for")
     async def help(self, interaction: discord.Interaction, command: str = None):
-        """Display help information"""
-        if command is None:
-            # Create main help embed
-            embed = discord.Embed(
-                title="Bot Help",
-                description="Here are all my available commands:",
-                color=discord.Color.blue()
-            )
-            
-            # Get all commands grouped by cog
-            for cog_name, cog in self.bot.cogs.items():
-                # Skip hidden cogs
-                if cog_name.startswith("_"):
-                    continue
-                
-                # Get commands for this cog
-                commands_list = cog.app_commands if hasattr(cog, 'app_commands') else []
-                if not commands_list:
-                    continue
-                
-                # Add field for this category
-                command_list = "\n".join([f"`/{cmd.name}` - {cmd.description}" for cmd in commands_list])
-                embed.add_field(name=cog_name, value=command_list, inline=False)
-            
-            # Set footer
-            embed.set_footer(text="Use /help <command> for more info on a command.")
-            
-        else:
-            # Find the command
-            cmd = discord.utils.get(self.bot.tree.get_commands(), name=command.lower())
-            if cmd is None:
+        """Display help information with a complete list of slash commands and usage.
+
+        - Without arguments: lists all commands (including group subcommands) with usage.
+        - With an argument: supports full-path lookup like "level admin setxp" or a single command name.
+        """
+
+        def _format_usage(cmd: app_commands.Command, path: str) -> str:
+            if getattr(cmd, "parameters", None):
+                parts = []
+                for p in cmd.parameters:
+                    parts.append(f"<{p.name}>" if p.required else f"[{p.name}]")
+                return f"/{path} {' '.join(parts)}".strip()
+            return f"/{path}"
+
+        def _flatten(cmds: List[app_commands.Command], parents: List[str]) -> List[Tuple[str, app_commands.Command]]:
+            out: List[Tuple[str, app_commands.Command]] = []
+            for c in cmds:
+                if isinstance(c, app_commands.Group):
+                    # Recurse into group
+                    out.extend(_flatten(c.commands, parents + [c.name]))
+                else:
+                    full_path = " ".join(parents + [c.name])
+                    out.append((full_path, c))
+            return out
+
+        all_top = self.bot.tree.get_commands()
+
+        # If a specific command was requested, try to resolve it smartly
+        if command:
+            query = command.lower().strip()
+            # Try full-path match first
+            flat = _flatten(all_top, [])
+            target = None
+            for path, c in flat:
+                if path.lower() == query or c.name.lower() == query:
+                    target = (path, c)
+                    break
+            if not target:
                 await interaction.response.send_message(f"Command `{command}` not found.", ephemeral=True)
                 return
-            
-            # Create command help embed
+
+            path, cmd_obj = target
             embed = discord.Embed(
-                title=f"Help: /{cmd.name}",
-                description=cmd.description,
+                title=f"Help: /{path}",
+                description=cmd_obj.description or "(no description)",
                 color=discord.Color.blue()
             )
-            
-            # Add parameters if any
-            if cmd.parameters:
-                params = []
-                for param in cmd.parameters:
-                    if param.required:
-                        params.append(f"<{param.name}>")
-                    else:
-                        params.append(f"[{param.name}]")
-                usage = f"/{cmd.name} {' '.join(params)}"
-                embed.add_field(name="Usage", value=usage, inline=False)
-            
-            # Set footer
+            embed.add_field(name="Usage", value=_format_usage(cmd_obj, path), inline=False)
+
+            # List choices/hints if available
+            hints = []
+            if getattr(cmd_obj, "parameters", None):
+                for p in cmd_obj.parameters:
+                    hint = f"- {p.name}: {'required' if p.required else 'optional'}"
+                    if getattr(p, "description", None):
+                        hint += f" — {p.description}"
+                    hints.append(hint)
+            if hints:
+                embed.add_field(name="Parameters", value="\n".join(hints), inline=False)
             embed.set_footer(text="<> = required, [] = optional")
-        
-        await interaction.response.send_message(embed=embed)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
+
+        # No specific command: produce a complete listing (chunked if needed)
+        flat = _flatten(all_top, [])
+        # Sort by path for stable display
+        flat.sort(key=lambda t: t[0])
+
+        # Build lines and chunk into multiple embeds if necessary
+        lines: List[str] = []
+        for path, c in flat:
+            usage = _format_usage(c, path)
+            desc = c.description or "(no description)"
+            lines.append(f"• {usage}\n  — {desc}")
+
+        header = (
+            "Here are all available slash commands. "
+            "Tip: use `/help <command>` (e.g., `/help level admin setxp`) for focused details."
+        )
+
+        chunks: List[List[str]] = []
+        current: List[str] = []
+        current_len = 0
+        for line in lines:
+            if current_len + len(line) + 1 > 3800:  # keep well below 4096 desc limit
+                chunks.append(current)
+                current = []
+                current_len = 0
+            current.append(line)
+            current_len += len(line) + 1
+        if current:
+            chunks.append(current)
+
+        # Send one or multiple embeds
+        first = True
+        for idx, part in enumerate(chunks, start=1):
+            embed = discord.Embed(
+                title="All Commands" + (f" (Page {idx}/{len(chunks)})" if len(chunks) > 1 else ""),
+                description=(header + "\n\n" if first else "") + "\n".join(part),
+                color=discord.Color.blue()
+            )
+            if first:
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+                first = False
+            else:
+                await interaction.followup.send(embed=embed, ephemeral=True)
 
     @app_commands.command(name="sync", description="Sync bot commands with Discord")
     @app_commands.checks.has_permissions(administrator=True)

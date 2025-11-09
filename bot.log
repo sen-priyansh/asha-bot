@@ -265,3 +265,57 @@ Traceback (most recent call last):
   File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\discord\app_commands\commands.py", line 876, in _do_call
     raise CommandInvokeError(self, e) from e
 discord.app_commands.errors.CommandInvokeError: Command 'roleall' raised an exception: HTTPException: 400 Bad Request (error code: 40060): Interaction has already been acknowledged.
+2025-11-09 15:23:49,066 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-11-09 15:23:49,073 - discord.client - INFO - logging in using static token
+2025-11-09 15:23:50,482 - bot - INFO - Loaded extension: moderation
+2025-11-09 15:23:50,546 - bot - INFO - Loaded extension: autorole
+2025-11-09 15:23:55,623 - bot - INFO - Loaded extension: aichat
+2025-11-09 15:23:55,723 - bot - INFO - Loaded extension: utility
+2025-11-09 15:23:55,741 - bot - ERROR - Failed to load extension leveling: Extension 'leveling' raised an error: SyntaxError: unterminated f-string literal (detected at line 476) (leveling.py, line 476)
+2025-11-09 15:23:55,797 - bot - INFO - Loaded extension: reactionroles
+2025-11-09 15:23:55,797 - bot - INFO - Syncing slash commands...
+2025-11-09 15:24:24,136 - bot - INFO - Bot stopped by user.
+2025-11-09 15:24:24,220 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001353F31E7B0>
+2025-11-09 15:31:40,056 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-11-09 15:31:40,059 - discord.client - INFO - logging in using static token
+2025-11-09 15:31:41,563 - bot - INFO - Loaded extension: moderation
+2025-11-09 15:31:41,634 - bot - INFO - Loaded extension: autorole
+2025-11-09 15:31:45,837 - bot - INFO - Loaded extension: aichat
+2025-11-09 15:31:45,879 - bot - INFO - Loaded extension: utility
+2025-11-09 15:31:46,039 - bot - ERROR - Failed to load extension leveling: Extension 'leveling' raised an error: CommandAlreadyRegistered: Command 'admin' already registered.
+2025-11-09 15:31:46,044 - bot - INFO - Loaded extension: reactionroles
+2025-11-09 15:31:46,048 - bot - INFO - Syncing slash commands...
+2025-11-09 15:32:46,030 - bot - INFO - Slash commands synced
+2025-11-09 15:32:47,475 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 67f2483cfbea7555882439eb27b244dc).
+2025-11-09 15:32:49,514 - bot - INFO - Registering persistent reaction role views...
+2025-11-09 15:32:49,515 - bot - INFO - Registered 0 persistent reaction role views.
+2025-11-09 15:32:49,515 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-11-09 15:32:49,516 - bot - INFO - Bot is ready! Serving 4 guilds.
+2025-11-09 15:37:19,179 - bot - INFO - Bot stopped by user.
+2025-11-09 15:38:23,730 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-11-09 15:38:23,734 - discord.client - INFO - logging in using static token
+2025-11-09 15:38:25,013 - bot - INFO - Loaded extension: moderation
+2025-11-09 15:38:25,098 - bot - INFO - Loaded extension: autorole
+2025-11-09 15:38:29,975 - bot - INFO - Loaded extension: aichat
+2025-11-09 15:38:30,066 - bot - INFO - Loaded extension: utility
+2025-11-09 15:38:30,220 - bot - INFO - Leveling Cog loaded and command groups registered.
+2025-11-09 15:38:30,220 - bot - INFO - Loaded extension: leveling
+2025-11-09 15:38:30,231 - bot - INFO - Loaded extension: reactionroles
+2025-11-09 15:38:30,231 - bot - INFO - Syncing slash commands...
+2025-11-09 15:39:30,134 - bot - INFO - Slash commands synced
+2025-11-09 15:39:31,861 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 805061099ca30be5fb5efc3cd009892b).
+2025-11-09 15:39:33,883 - bot - INFO - Registering persistent reaction role views...
+2025-11-09 15:39:33,883 - bot - INFO - Registered 0 persistent reaction role views.
+2025-11-09 15:39:33,883 - bot - INFO - Logged in as asha#0628 (ID: 1347977788673626132)
+2025-11-09 15:39:33,886 - bot - INFO - Bot is ready! Serving 4 guilds.
+2025-11-09 15:39:33,888 - bot - INFO - Running periodic save task for leveling data...
+2025-11-09 15:39:33,904 - bot - INFO - Periodic save task completed.
+2025-11-09 15:44:33,884 - bot - INFO - Running periodic save task for leveling data...
+2025-11-09 15:44:33,899 - bot - INFO - Periodic save task completed.
+2025-11-09 15:49:33,890 - bot - INFO - Running periodic save task for leveling data...
+2025-11-09 15:49:33,910 - bot - INFO - Periodic save task completed.
+2025-11-09 15:54:33,882 - bot - INFO - Running periodic save task for leveling data...
+2025-11-09 15:54:33,885 - bot - INFO - Periodic save task completed.
+2025-11-09 15:59:33,899 - bot - INFO - Running periodic save task for leveling data...
+2025-11-09 15:59:33,906 - bot - INFO - Periodic save task completed.

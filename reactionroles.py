@@ -48,6 +48,28 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
             if os.path.exists(self.data_file):
                 with open(self.data_file, 'r') as f:
                     self.reaction_roles = json.load(f)
+                # Migrate legacy entries to unified schema
+                for guild_id, guild_data in list(self.reaction_roles.items()):
+                    if not isinstance(guild_data, dict):
+                        continue
+                    for message_id, message_data in list(guild_data.items()):
+                        if not isinstance(message_data, dict):
+                            continue
+                        for emoji, value in list(message_data.items()):
+                            if emoji == "settings":
+                                continue
+                            # If stored as plain role id, convert
+                            if isinstance(value, (int, str)):
+                                message_data[emoji] = {
+                                    "role_id": str(value),
+                                    "mode": "normal",
+                                    "label": None
+                                }
+                            elif isinstance(value, dict):
+                                # Ensure required keys exist
+                                if "role_id" in value:
+                                    value.setdefault("mode", "normal")
+                                    value.setdefault("label", None)
         except Exception as e:
             logger.error(f"Error loading reaction role data: {e}")
             
@@ -74,7 +96,8 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
         description="Description for the embed",
         channel="Channel to send the reaction role message to",
         color="Color for the embed (hex code like #FF0000)",
-        style="Style of the reaction role message (reactions or buttons)"
+        style="Style of the reaction role message (reactions or buttons)",
+        theme="Optional preset theme for quick styling (blue, dark, sunset, neon, forest)"
     )
     @app_commands.choices(style=[
         app_commands.Choice(name="Traditional Reactions", value="reactions"),
@@ -88,11 +111,22 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
         description: str, 
         channel: discord.TextChannel, 
         color: Optional[str] = None,
-        style: str = "reactions"
+        style: str = "reactions",
+        theme: Optional[str] = None
     ):
         """Create a reaction role message with a customized embed"""
         # Validate color input
         embed_color = discord.Color.blue()
+        theme_colors = {
+            "blue": discord.Color.blurple(),
+            "dark": discord.Color.dark_grey(),
+            "sunset": discord.Color.from_rgb(255, 94, 77),
+            "neon": discord.Color.from_rgb(57, 255, 20),
+            "forest": discord.Color.from_rgb(34, 139, 34)
+        }
+        if theme and theme.lower() in theme_colors:
+            embed_color = theme_colors[theme.lower()]
+            color = None
         if color:
             try:
                 color = color.strip('#')
@@ -163,43 +197,214 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
             logger.error(f"Error creating reaction role message: {e}")
             await interaction.response.send_message(f"Error creating reaction role message: {e}", ephemeral=True)
     
-    @app_commands.command(name="add", description="Add a reaction role")
+    @app_commands.command(name="quick_buttons", description="Create a beautiful button role panel quickly")
     @app_commands.describe(
-        message_id="The ID of the message to add the reaction role to",
-        emoji="The emoji to use for the reaction role",
-        role="The role to give when the emoji is reacted"
+        channel="Channel to post the panel",
+        title="Panel title",
+        description="Panel description",
+        color="Hex color like #5865F2",
+        theme="Preset theme (blue, dark, sunset, neon, forest)",
+        role1="First role",
+        emoji1="Emoji for role1 (optional)",
+        role2="Second role (optional)",
+        emoji2="Emoji for role2 (optional)",
+        role3="Third role (optional)",
+        emoji3="Emoji for role3 (optional)",
+        role4="Fourth role (optional)",
+        emoji4="Emoji for role4 (optional)",
+        role5="Fifth role (optional)",
+        emoji5="Emoji for role5 (optional)"
     )
+    @app_commands.checks.has_permissions(manage_roles=True)
+    async def quick_buttons(
+        self,
+        interaction: discord.Interaction,
+        channel: discord.TextChannel,
+        title: str,
+        description: str,
+        color: Optional[str] = None,
+        theme: Optional[str] = None,
+        role1: Optional[discord.Role] = None, emoji1: Optional[str] = None,
+        role2: Optional[discord.Role] = None, emoji2: Optional[str] = None,
+        role3: Optional[discord.Role] = None, emoji3: Optional[str] = None,
+        role4: Optional[discord.Role] = None, emoji4: Optional[str] = None,
+        role5: Optional[discord.Role] = None, emoji5: Optional[str] = None,
+    ):
+        """Create a buttons panel in one go with up to 5 roles."""
+        await interaction.response.defer(ephemeral=True)
+        roles = [(role1, emoji1), (role2, emoji2), (role3, emoji3), (role4, emoji4), (role5, emoji5)]
+        roles = [(r, e) for (r, e) in roles if r is not None]
+        if not roles:
+            await interaction.followup.send("Please provide at least one role.", ephemeral=True)
+            return
+        # Hierarchy check
+        for r, _ in roles:
+            if r.position >= interaction.guild.me.top_role.position:
+                await interaction.followup.send(f"I can't manage {r.mention} due to role hierarchy.", ephemeral=True)
+                return
+
+        # Color/theme
+        embed_color = discord.Color.blurple()
+        theme_colors = {
+            "blue": discord.Color.blurple(),
+            "dark": discord.Color.dark_grey(),
+            "sunset": discord.Color.from_rgb(255, 94, 77),
+            "neon": discord.Color.from_rgb(57, 255, 20),
+            "forest": discord.Color.from_rgb(34, 139, 34)
+        }
+        if theme and theme.lower() in theme_colors:
+            embed_color = theme_colors[theme.lower()]
+            color = None
+        if color:
+            try:
+                c = color.strip('#')
+                embed_color = discord.Color.from_rgb(int(c[0:2],16), int(c[2:4],16), int(c[4:6],16))
+            except:
+                await interaction.followup.send("Invalid color format. Use #RRGGBB.", ephemeral=True)
+                return
+
+        # Create embed
+        embed = discord.Embed(title=title, description=description, color=embed_color)
+        embed.set_footer(text="Click the buttons to toggle roles")
+
+        if not channel.permissions_for(interaction.guild.me).send_messages or not channel.permissions_for(interaction.guild.me).embed_links:
+            await interaction.followup.send(f"I don't have permission to send messages or embeds in {channel.mention}.", ephemeral=True)
+            return
+
+        # Send message first
+        msg = await channel.send(embed=embed)
+
+        guild_id = str(interaction.guild.id)
+        message_id = str(msg.id)
+        if guild_id not in self.reaction_roles:
+            self.reaction_roles[guild_id] = {}
+        self.reaction_roles[guild_id][message_id] = {
+            "settings": {
+                "limit": None,
+                "required_roles": None,
+                "max_roles": None,
+                "style": "buttons",
+                "embed_data": {
+                    "title": title,
+                    "description": description,
+                    "color": (color.strip('#') if color else "blue")
+                }
+            }
+        }
+
+        # Default emoji sequence if not provided
+        defaults = ["✅", "🔔", "🎮", "📢", "🌟"]
+        for idx, (r, e) in enumerate(roles):
+            emoji = e or defaults[idx % len(defaults)]
+            self.reaction_roles[guild_id][message_id][emoji] = {
+                "role_id": str(r.id),
+                "mode": "normal",
+                "label": r.name
+            }
+
+        # Attach buttons
+        await self.update_button_message(guild_id, message_id, msg, channel)
+        await self.save_data()
+        await interaction.followup.send(f"Created button role panel in {channel.mention}.", ephemeral=True)
+
+    @app_commands.command(name="add", description="Add a role to a reaction or button role message")
+    @app_commands.describe(
+        message="Message ID or link of the reaction role message",
+        emoji="Emoji to use (for reactions or button icon)",
+        role="Role to assign",
+        mode="Assignment mode",
+        label="(Buttons only) Optional button text"
+    )
+    @app_commands.choices(mode=[
+        app_commands.Choice(name="Normal - Users can have multiple", value="normal"),
+        app_commands.Choice(name="Unique - Only one from this message", value="unique"),
+        app_commands.Choice(name="Exclusive - Removes other reaction roles", value="exclusive")
+    ])
     async def add_reaction_role(
         self,
         interaction: discord.Interaction,
-        message_id: str,
+        message: str,
         emoji: str,
-        role: discord.Role
+        role: discord.Role,
+        mode: str = "normal",
+        label: Optional[str] = None
     ):
-        """Add a reaction role command"""
+        """Add a role mapping to a reaction role message (supports reaction & button styles)"""
+        guild_id = str(interaction.guild.id)
+        # Parse message link or ID
         try:
-            message = await interaction.channel.fetch_message(int(message_id))
-            await message.add_reaction(emoji)
-            
-            guild_id = str(interaction.guild.id)
-            if guild_id not in self.reaction_roles:
-                self.reaction_roles[guild_id] = {}
-                
-            if message_id not in self.reaction_roles[guild_id]:
-                self.reaction_roles[guild_id][message_id] = {}
-                
-            self.reaction_roles[guild_id][message_id][emoji] = role.id
-            self.save_reaction_roles()
-            
-            await interaction.response.send_message(
-                f"Added reaction role: {emoji} -> {role.mention}",
-                ephemeral=True
-            )
+            if message.startswith("http"):
+                parts = message.strip().split('/')
+                message_id = parts[-1]
+            else:
+                message_id = message.strip()
+            target_message = None
+            try:
+                target_message = await interaction.channel.fetch_message(int(message_id))
+            except:
+                for ch in interaction.guild.text_channels:
+                    try:
+                        target_message = await ch.fetch_message(int(message_id))
+                        break
+                    except:
+                        continue
+            if not target_message:
+                await interaction.response.send_message("Message not found. Provide a valid message ID or link.", ephemeral=True)
+                return
+        except Exception:
+            await interaction.response.send_message("Invalid message reference.", ephemeral=True)
+            return
+
+        # Ensure schema root exists
+        if guild_id not in self.reaction_roles:
+            self.reaction_roles[guild_id] = {}
+        if message_id not in self.reaction_roles[guild_id]:
+            self.reaction_roles[guild_id][message_id] = {
+                "settings": {
+                    "limit": None,
+                    "required_roles": None,
+                    "max_roles": None,
+                    "style": "reactions",
+                    "embed_data": {
+                        "title": target_message.embeds[0].title if target_message.embeds else "Reaction Roles",
+                        "description": target_message.embeds[0].description if target_message.embeds else "React to get roles",
+                        "color": "blue"
+                    }
+                }
+            }
+
+        style = self.reaction_roles[guild_id][message_id]["settings"].get("style", "reactions")
+
+        # Validate role hierarchy
+        if role.position >= interaction.guild.me.top_role.position:
+            await interaction.response.send_message("I cannot manage that role (hierarchy).", ephemeral=True)
+            return
+
+        # Prevent duplicates
+        if emoji in self.reaction_roles[guild_id][message_id]:
+            await interaction.response.send_message("That emoji is already mapped on this message.", ephemeral=True)
+            return
+
+        # Store mapping using unified schema
+        self.reaction_roles[guild_id][message_id][emoji] = {
+            "role_id": str(role.id),
+            "mode": mode,
+            "label": label
+        }
+
+        # Update message depending on style
+        try:
+            if style == "reactions":
+                await target_message.add_reaction(emoji)
+            elif style == "buttons":
+                await self.update_button_message(guild_id, message_id, target_message, target_message.channel)
         except Exception as e:
-            await interaction.response.send_message(
-                f"Error adding reaction role: {str(e)}",
-                ephemeral=True
-            )
+            logger.error(f"Error updating message with new role: {e}")
+
+        await self.save_data()
+        await interaction.response.send_message(
+            f"Added mapping {emoji} → {role.mention} (mode: {mode})", ephemeral=True
+        )
     
     @app_commands.command(name="remove", description="Remove a reaction role from a message")
     @app_commands.describe(
@@ -246,9 +451,16 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
                 logger.error(f"Could not remove reaction from message: {e}")
             
             # Remove from data
-            role_id = self.reaction_roles[guild_id][message_id][emoji]["role_id"]
-            role = interaction.guild.get_role(int(role_id))
-            role_name = role.name if role else f"Unknown Role ({role_id})"
+            role_entry = self.reaction_roles[guild_id][message_id].get(emoji)
+            role_id = None
+            role_name = "Unknown Role"
+            if isinstance(role_entry, dict):
+                role_id = role_entry.get("role_id")
+                if role_id:
+                    role_obj = interaction.guild.get_role(int(role_id))
+                    if role_obj:
+                        role_name = role_obj.name
+                        role_id = str(role_obj.id)
             
             del self.reaction_roles[guild_id][message_id][emoji]
             
@@ -290,17 +502,20 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
             for emoji, role_data in data.items():
                 if emoji == "settings":
                     continue
-                    
-                role_id = role_data["role_id"]
-                mode = role_data["mode"]
-                role = interaction.guild.get_role(int(role_id))
-                role_name = role.name if role else f"Unknown Role ({role_id})"
-                
-                message_text.append(f"{emoji} → {role_name} ({mode})")
+                if not isinstance(role_data, dict):
+                    continue
+                role_id = role_data.get("role_id")
+                mode = role_data.get("mode", "normal")
+                label = role_data.get("label")
+                role_obj = interaction.guild.get_role(int(role_id)) if role_id else None
+                role_name = role_obj.name if role_obj else f"Unknown Role ({role_id})"
+                label_part = f" | {label}" if label else ""
+                message_text.append(f"{emoji} → {role_name}{label_part} ({mode})")
             
             if message_text:
+                style = data.get("settings", {}).get("style", "reactions")
                 embed.add_field(
-                    name=f"Message ID: {message_id}",
+                    name=f"Message {message_id} (style: {style})",
                     value="\n".join(message_text),
                     inline=False
                 )
@@ -636,9 +851,13 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
                 continue
             
             # Get role info
-            role_id = role_data["role_id"]
-            mode = role_data["mode"]
+            if not isinstance(role_data, dict):
+                continue
+            role_id = role_data.get("role_id")
+            mode = role_data.get("mode", "normal")
             label = role_data.get("label", None)
+            if not role_id:
+                continue
             
             # Handle custom emoji format
             button_emoji = emoji
@@ -822,12 +1041,29 @@ class ReactionRoles(commands.GroupCog, name="reaction"):
                                 continue
                                 
                             # Create and add button
-                            role_id = role_data["role_id"]
-                            mode = role_data["mode"]
+                            if not isinstance(role_data, dict):
+                                continue
+                            role_id = role_data.get("role_id")
+                            mode = role_data.get("mode", "normal")
                             label = role_data.get("label")
+                            if not role_id:
+                                continue
+
+                            # Parse potential custom emoji markup
+                            button_emoji = emoji
+                            if isinstance(emoji, str) and emoji.startswith('<:') and emoji.endswith('>'):
+                                try:
+                                    parts = emoji.strip('<>').split(':')
+                                    if len(parts) >= 2:
+                                        emoji_id = parts[-1]
+                                        emoji_name = parts[1] if len(parts) > 2 else parts[0]
+                                        button_emoji = discord.PartialEmoji(name=emoji_name, id=int(emoji_id))
+                                except Exception as e:
+                                    logger.error(f"Error parsing custom emoji {emoji}: {e}")
+                                    button_emoji = None
                             
                             button = RoleButton(
-                                emoji=emoji,
+                                emoji=button_emoji,
                                 role_id=role_id,
                                 message_id=message_id,
                                 guild_id=guild_id,

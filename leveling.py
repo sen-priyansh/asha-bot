@@ -473,9 +473,7 @@ class Leveling(commands.Cog):
             description=f"Set custom message for **Level {level if level > 0 else 'Default'}**",
             color=discord.Color.green()
         )
-        embed.add_field(name="Template", value=f"```
-{message}
-```", inline=False)
+        embed.add_field(name="Template", value="```\n" + message + "\n```", inline=False)
         embed.add_field(name="Preview", value=preview, inline=False)
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -527,10 +525,7 @@ class Leveling(commands.Cog):
             message = self.level_messages[guild_id][level_key]
             level_display = f"Level {level_key}" if level_key != '0' else "Default"
             display_message = (message[:70] + '...') if len(message) > 70 else message
-            message_list += f"**{level_display}:** ```
-{display_message}
-```
-"
+            message_list += "**" + level_display + ":** ```\n" + display_message + "\n```\n"
 
         if not message_list:
              message_list = "No messages configured."
@@ -813,9 +808,10 @@ class Leveling(commands.Cog):
         guild_id = str(interaction.guild.id)
         confirm_view = ConfirmView(interaction.user.id)
         await interaction.response.send_message(
-            f"🔥🔥 **EXTREME WARNING** 🔥🔥
-Reset **ALL** leveling data (XP, roles, settings) for **{interaction.guild.name}**? This **CANNOT** be undone.",
-            view=confirm_view, ephemeral=True
+            f"🔥🔥 **EXTREME WARNING** 🔥🔥\n"
+            f"Reset **ALL** leveling data (XP, roles, settings) for **{interaction.guild.name}**? This **CANNOT** be undone.",
+            view=confirm_view,
+            ephemeral=True
         )
         await confirm_view.wait()
 
@@ -1295,17 +1291,228 @@ Reset **ALL** leveling data (XP, roles, settings) for **{interaction.guild.name}
         level_str = str(level)
         return guild_messages.get(level_str, guild_messages.get("0", default_message))
 
-    async def generate_level_card(*args, **kwargs): # Ellipsis: Keep implementation
-        # ... (generate_level_card implementation) ...
-        pass
+    async def generate_level_card(
+        self,
+        member: discord.Member,
+        guild_id: str,
+        user_id: str,
+        level: int,
+        xp: int,
+        next_level_xp: int,
+        percentage: int,
+        rank: int = 0,
+        theme: str = "default"
+    ) -> io.BytesIO:
+        """Generate a simple level card image with optional custom background.
 
-    async def get_user_rank(*args, **kwargs): # Ellipsis: Keep implementation
-        # ... (get_user_rank implementation) ...
-        pass
+        Returns a BytesIO PNG image.
+        """
+        # Canvas
+        width, height = 800, 240
+        card = Image.new("RGB", (width, height), (25, 29, 35))
+        draw = ImageDraw.Draw(card)
 
-    async def generate_leaderboard_image(*args, **kwargs): # Ellipsis: Keep implementation
-        # ... (generate_leaderboard_image implementation) ...
-        pass
+        # Background handling
+        bg_url = self.background_images.get(guild_id, {}).get(user_id)
+        if bg_url:
+            try:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(bg_url, timeout=10) as resp:
+                        if resp.status == 200:
+                            bg_data = await resp.read()
+                            with Image.open(io.BytesIO(bg_data)).convert("RGB") as bg:
+                                bg = bg.resize((width, height), Image.LANCZOS)
+                                # Subtle blur for readability
+                                bg = bg.filter(ImageFilter.GaussianBlur(radius=2))
+                                card.paste(bg)
+            except Exception as e:
+                logger.warning(f"Failed to load background for {user_id}: {e}")
+
+        # Theme overlay for readability and style
+        theme_colors = {
+            "default": (0, 0, 0, 110),
+            "dark": (0, 0, 0, 140),
+            "light": (255, 255, 255, 90),
+            "blue": (30, 64, 175, 110),
+            "green": (16, 95, 66, 110),
+            "red": (136, 19, 55, 110),
+            "purple": (88, 28, 135, 110),
+            "gold": (146, 64, 14, 110),
+        }
+        overlay_color = theme_colors.get(theme, theme_colors["default"])
+        overlay = Image.new("RGBA", (width, height), overlay_color)
+        card = Image.alpha_composite(card.convert("RGBA"), overlay).convert("RGB")
+        draw = ImageDraw.Draw(card)
+
+        # Avatar
+        avatar_size = 128
+        avatar_x, avatar_y = 24, (height - avatar_size) // 2
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(str(member.display_avatar.replace(format='png', size=256).url), timeout=10) as resp:
+                    if resp.status == 200:
+                        av_bytes = await resp.read()
+                        with Image.open(io.BytesIO(av_bytes)).convert("RGBA") as av:
+                            av = av.resize((avatar_size, avatar_size), Image.LANCZOS)
+                            # Make circular avatar
+                            mask = Image.new("L", (avatar_size, avatar_size), 0)
+                            ImageDraw.Draw(mask).ellipse((0, 0, avatar_size, avatar_size), fill=255)
+                            card.paste(av, (avatar_x, avatar_y), mask)
+        except Exception as e:
+            logger.debug(f"Avatar load failed for {member.id}: {e}")
+
+        # Fonts
+        def _font(name: str, size: int):
+            try:
+                path = os.path.join(self.fonts_dir, name)
+                if os.path.exists(path):
+                    return ImageFont.truetype(path, size)
+            except Exception:
+                pass
+            return ImageFont.load_default()
+
+        font_title = _font("Roboto-Bold.ttf", 32)
+        font_sub = _font("Roboto-Regular.ttf", 20)
+        font_small = _font("Roboto-Regular.ttf", 16)
+
+        # Text positions
+        text_x = avatar_x + avatar_size + 24
+        text_y = 32
+
+        # Primary line: username
+        name_text = member.display_name
+        draw.text((text_x, text_y), name_text, fill=(255, 255, 255), font=font_title)
+
+        # Secondary line: Level | Rank
+        text_y += 44
+        sec_text = f"Level {level}"
+        if rank:
+            sec_text += f"  •  Rank #{rank}"
+        draw.text((text_x, text_y), sec_text, fill=(235, 235, 235), font=font_sub)
+
+        # XP line
+        text_y += 28
+        xp_text = f"XP: {xp:,}"
+        draw.text((text_x, text_y), xp_text, fill=(210, 210, 210), font=font_small)
+
+        # Progress bar
+        bar_x, bar_y = text_x, text_y + 36
+        bar_w, bar_h = width - bar_x - 24, 24
+        # Background bar
+        draw.rounded_rectangle([bar_x, bar_y, bar_x + bar_w, bar_y + bar_h], radius=12, fill=(60, 65, 75))
+        # Filled bar
+        pct = max(0, min(100, percentage))
+        filled_w = int(bar_w * (pct / 100.0))
+        fill_color = (99, 102, 241)  # Indigo-ish
+        draw.rounded_rectangle([bar_x, bar_y, bar_x + filled_w, bar_y + bar_h], radius=12, fill=fill_color)
+        # Percentage text
+        pct_text = f"{pct}% to next level"
+        tw, th = draw.textsize(pct_text, font=font_small)
+        draw.text((bar_x + bar_w - tw, bar_y + (bar_h - th) // 2), pct_text, fill=(255, 255, 255), font=font_small)
+
+        # Footer
+        footer = f"Next level at {next_level_xp:,} XP"
+        draw.text((text_x, bar_y + bar_h + 12), footer, fill=(180, 180, 180), font=font_small)
+
+        # Export to bytes
+        out = io.BytesIO()
+        card.save(out, format="PNG", optimize=True)
+        out.seek(0)
+        return out
+
+    async def get_user_rank(self, guild_id: str, user_id: str) -> int:
+        """Return the 1-based rank of the user by XP in the guild, or 0 if not found."""
+        users = self.xp_data.get(guild_id, {})
+        if not users or user_id not in users:
+            return 0
+        try:
+            sorted_users = sorted(users.items(), key=lambda item: item[1].get("xp", 0), reverse=True)
+            for idx, (uid, _) in enumerate(sorted_users, start=1):
+                if uid == user_id:
+                    return idx
+        except Exception as e:
+            logger.warning(f"Rank computation failed for G:{guild_id} U:{user_id}: {e}")
+        return 0
+
+    async def generate_leaderboard_image(
+        self,
+        guild: discord.Guild,
+        sorted_users: list,
+        page: int,
+        total_pages: int,
+        per_page: int,
+        theme: str = "default"
+    ) -> io.BytesIO:
+        """Generate a simple visual leaderboard image for the page slice."""
+        width, height = 900, 520
+        img = Image.new("RGB", (width, height), (24, 26, 32))
+        draw = ImageDraw.Draw(img)
+
+        # Theme header bar
+        theme_colors = {
+            "default": (60, 65, 75),
+            "dark": (40, 44, 52),
+            "light": (210, 210, 210),
+            "blue": (37, 99, 235),
+            "green": (16, 95, 66),
+            "red": (153, 27, 27),
+            "purple": (126, 34, 206),
+            "gold": (146, 64, 14),
+        }
+        header_color = theme_colors.get(theme, theme_colors["default"])
+        draw.rectangle([0, 0, width, 76], fill=header_color)
+
+        # Fonts
+        def _font(name: str, size: int):
+            try:
+                path = os.path.join(self.fonts_dir, name)
+                if os.path.exists(path):
+                    return ImageFont.truetype(path, size)
+            except Exception:
+                pass
+            return ImageFont.load_default()
+
+        title_font = _font("Roboto-Bold.ttf", 28)
+        row_font = _font("Roboto-Regular.ttf", 20)
+        small_font = _font("Roboto-Regular.ttf", 16)
+
+        title = f"{guild.name} • Leaderboard (Page {page}/{total_pages})"
+        draw.text((24, 22), title, fill=(255, 255, 255), font=title_font)
+
+        # Rows
+        start_idx = (page - 1) * per_page
+        end_idx = min(start_idx + per_page, len(sorted_users))
+        y = 100
+        row_h = 76
+        for i in range(start_idx, end_idx):
+            user_id, data = sorted_users[i]
+            rank = i + 1
+            xp = data.get("xp", 0)
+            level = data.get("level", 0)
+
+            # Background stripe
+            stripe = (30, 34, 40) if (i % 2 == 0) else (36, 40, 46)
+            draw.rounded_rectangle([16, y - 10, width - 16, y + row_h - 18], radius=12, fill=stripe)
+
+            # Rank
+            draw.text((32, y), f"#{rank}", fill=(255, 255, 255), font=row_font)
+
+            # Name
+            name = f"User {user_id}"
+            member = guild.get_member(int(user_id))
+            if member:
+                name = member.display_name
+            draw.text((110, y), name, fill=(235, 235, 235), font=row_font)
+
+            # Level / XP
+            draw.text((110, y + 28), f"Level {level} • {xp:,} XP", fill=(200, 200, 200), font=small_font)
+
+            y += row_h
+
+        out = io.BytesIO()
+        img.save(out, format="PNG", optimize=True)
+        out.seek(0)
+        return out
 
 # --- Confirmation View ---
 # (Keep existing ConfirmView)
@@ -1361,15 +1568,5 @@ async def setup(bot):
 
     # Add the main cog to the bot first
     await bot.add_cog(cog)
-
-    # --- Add the groups to the bot's command tree manually ---
-    # This ensures they are registered under the cog's namespace if needed
-    # (Though discord.py v2.0+ usually handles this automatically if groups are defined in the cog)
-    # Let's be explicit for safety, especially if issues persist.
-    bot.tree.add_command(cog.admin_group, guild=None) # Or specify guilds= if needed
-    bot.tree.add_command(cog.role_group, guild=None)
-    bot.tree.add_command(cog.settings_group, guild=None)
-    bot.tree.add_command(cog.card_group, guild=None)
-    bot.tree.add_command(cog.advanced_group, guild=None)
 
     logger.info("Leveling Cog loaded and command groups registered.") 
