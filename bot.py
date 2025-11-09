@@ -6,12 +6,11 @@ import logging
 import config
 import sys
 
-# Set up logging with proper encoding
+# Set up logging to console only (no bot.log file)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("bot.log", encoding='utf-8'),
         logging.StreamHandler(stream=sys.stdout)  # Use stdout to handle Unicode properly
     ]
 )
