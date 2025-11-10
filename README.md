@@ -106,5 +106,8 @@ Requires valid Gemini API key. Configure model & parameters in `config.py`.
 ## 📄 License
 MIT
 
+## 📜 Terms of Service
+Use of this bot constitutes acceptance of the terms in `TERMS_OF_SERVICE.md`. The bot provides moderation, leveling, reaction roles, and AI chat features. By inviting or interacting with the bot you agree not to misuse it, input sensitive data into AI prompts, or rely on AI outputs for professional advice. See the full document for data handling, acceptable use, and liability disclaimers.
+
 ---
 Contributions & feature requests welcome. Feel free to open issues for enhancements or bug reports.
