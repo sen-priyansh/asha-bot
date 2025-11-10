@@ -50,9 +50,19 @@ pip install -r requirements.txt
 
 Create a `.env` file:
 ```
-DISCORD_TOKEN=your_bot_token
-GEMINI_API_KEY=your_gemini_api_key   # optional unless using AI chat
-OWNER_ID=your_user_id_numeric
+DISCORD_TOKEN=your_bot_token_here
+GEMINI_API_KEY=your_gemini_api_key_here   # optional unless using AI chat
+OWNER_ID=your_numeric_user_id
+DEFAULT_ROLE_ID=optional_role_id
+BOT_ACTIVITY="Moderating & Chatting"
+BOT_STATUS=online
+GEMINI_MODEL=gemini-2.0-flash
+MAX_TOKENS=1024
+TEMPERATURE=0.7
+TOP_P=0.95
+TOP_K=40
+REPLY_TO_PINGS=true
+REPLY_TO_REPLIES=true
 ```
 
 Run:
@@ -79,11 +89,13 @@ Uses Pillow; run `/level advanced syncfonts` for better typography. Supports cus
 - Send Messages / Embed Links / Add Reactions
 - Read Message History
 
-## 💾 Persistence
+## 💾 Persistence & Secrets
 JSON files in root:
 - `leveling.json`, `level_roles.json`, `level_messages.json`, `level_backgrounds.json`, `leveling_settings.json`
 - `reaction_roles.json`
 Periodic autosave tasks run every 5 minutes.
+
+Environment variables are loaded from `.env` (ignored by git). Never hardcode tokens/API keys in source files. Example template is in `.env.example`.
 
 ## 🩺 Diagnostics
 Use `/level advanced diagnose` to auto-detect & fix malformed data (missing roles, orphaned users, invalid channels).
