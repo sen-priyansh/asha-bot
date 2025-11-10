@@ -81,6 +81,15 @@ async def on_ready():
     """Called when the bot is ready"""
     logger.info(f"Logged in as {bot.user} (ID: {bot.user.id})")
     
+    # Connect to MongoDB if configured
+    if config.USE_MONGODB:
+        from database import db
+        connected = await db.connect()
+        if connected:
+            logger.info("MongoDB connected successfully")
+        else:
+            logger.warning("MongoDB connection failed, falling back to JSON files")
+    
     # Set bot status
     activity_type = discord.ActivityType.watching
     activity_name = config.BOT_ACTIVITY
@@ -162,10 +171,18 @@ async def load_extensions(bot):
             logger.error(f"Failed to load extension {cog}: {e}")
 
 # Run the bot
+async def shutdown():
+    """Cleanup on shutdown"""
+    if config.USE_MONGODB:
+        from database import db
+        await db.close()
+
 if __name__ == "__main__":
     try:
         asyncio.run(bot.start(config.DISCORD_TOKEN))
     except KeyboardInterrupt:
         logger.info("Bot stopped by user.")
+        asyncio.run(shutdown())
     except Exception as e:
-        logger.error(f"Bot crashed: {e}") 
+        logger.error(f"Bot crashed: {e}")
+        asyncio.run(shutdown()) 

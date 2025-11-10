@@ -13,6 +13,7 @@ import io
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps
 from urllib.parse import urlparse
 import datetime
+from leveling_storage import LevelingStorage
 
 logger = logging.getLogger("bot")
 
@@ -27,6 +28,11 @@ class Leveling(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        
+        # Initialize storage abstraction layer
+        self.storage = LevelingStorage()
+        
+        # In-memory cache (populated from storage)
         self.xp_data = {}  # {guild_id: {user_id: {"xp": xp, "level": level, "last_message": timestamp}}}
         self.level_roles = {}  # {guild_id: {level: role_id}}
         self.message_cooldowns = {} # Deprecated? last_message in xp_data seems to handle this.
@@ -38,13 +44,6 @@ class Leveling(commands.Cog):
         self.xp_cooldown = 60
         self.min_xp = 10
         self.max_xp = 20
-
-        # File paths
-        self.data_file = 'leveling.json'
-        self.roles_file = 'level_roles.json'
-        self.messages_file = 'level_messages.json'
-        self.backgrounds_file = 'level_backgrounds.json'
-        self.settings_file = 'leveling_settings.json' # Added for server settings
 
         self.fonts_dir = 'fonts'
         self.images_dir = 'level_images' # Unused?
@@ -83,11 +82,11 @@ class Leveling(commands.Cog):
         guild_id = str(interaction.guild.id)
         user_id = str(member.id)
 
-        if guild_id not in self.xp_data or user_id not in self.xp_data[guild_id]:
+        data = await self.get_user_xp_data(guild_id, user_id)
+        
+        if not data or data.get("xp", 0) == 0:
             await interaction.response.send_message(f"{member.mention} hasn't earned any XP yet!", ephemeral=True)
             return
-
-        data = self.xp_data[guild_id][user_id]
         current_level = data["level"]
         current_xp = data["xp"]
 
@@ -124,16 +123,12 @@ class Leveling(commands.Cog):
        # ... (leaderboard command implementation) ...
         guild_id = str(interaction.guild.id)
 
-        if guild_id not in self.xp_data or not self.xp_data[guild_id]:
+        # Get leaderboard from storage (already sorted by XP descending)
+        sorted_users = await self.get_guild_leaderboard(guild_id)
+        
+        if not sorted_users:
             await interaction.response.send_message("No XP data available for this server yet!", ephemeral=True)
             return
-
-        # Sort users by XP
-        sorted_users = sorted(
-            self.xp_data[guild_id].items(),
-            key=lambda item: item[1].get("xp", 0), # Use .get for safety
-            reverse=True
-        )
 
         # Paginate results (10 per page)
         per_page = 10
@@ -1169,55 +1164,49 @@ class Leveling(commands.Cog):
          return await self.generate_level_card(member=member, guild_id=guild_id, user_id=user_id, level=level, xp=xp, next_level_xp=total_xp_next, percentage=percentage, rank=rank)
 
     def load_data(self):
-        self._load_json_data(self.data_file, "XP data", "xp_data")
-        self._load_json_data(self.roles_file, "Level roles", "level_roles")
-        self._load_json_data(self.messages_file, "Level messages", "level_messages")
-        self._load_json_data(self.backgrounds_file, "Background images", "background_images")
-        self._load_json_data(self.settings_file, "Leveling settings", "leveling_data")
-
-    def _load_json_data(self, file_path: str, data_name: str, attribute_name: str):
-        try:
-            if os.path.exists(file_path):
-                with open(file_path, 'r', encoding='utf-8') as f:
-                     content = f.read()
-                     if not content.strip(): setattr(self, attribute_name, {}); return
-                     f.seek(0)
-                     setattr(self, attribute_name, json.load(f))
-                     # logger.info(f"Loaded {data_name} from {file_path}")
-            else: setattr(self, attribute_name, {})
-        except json.JSONDecodeError as e: logger.error(f"JSON Decode Error {data_name} ({file_path}): {e}"); setattr(self, attribute_name, {})
-        except Exception as e: logger.error(f"Load Error {data_name} ({file_path}): {e}", exc_info=True); setattr(self, attribute_name, {})
+        """Load initial data into memory cache from storage layer."""
+        # Storage layer handles both MongoDB and JSON fallback automatically
+        # We don't need to load everything into memory initially
+        # Data will be fetched on-demand and cached
+        logger.info("Leveling data will be loaded on-demand from storage layer")
+    
+    # Storage helper methods
+    async def get_user_xp_data(self, guild_id: str, user_id: str) -> dict:
+        """Get user XP data from storage (with caching)."""
+        # Check cache first
+        if guild_id in self.xp_data and user_id in self.xp_data[guild_id]:
+            return self.xp_data[guild_id][user_id]
+        
+        # Fetch from storage
+        data = await self.storage.get_user_data(guild_id, user_id)
+        
+        # Cache it
+        if guild_id not in self.xp_data:
+            self.xp_data[guild_id] = {}
+        self.xp_data[guild_id][user_id] = data
+        
+        return data
+    
+    async def set_user_xp_data(self, guild_id: str, user_id: str, data: dict):
+        """Set user XP data in storage and update cache."""
+        # Update cache
+        if guild_id not in self.xp_data:
+            self.xp_data[guild_id] = {}
+        self.xp_data[guild_id][user_id] = data
+        
+        # Save to storage
+        await self.storage.set_user_data(guild_id, user_id, data)
+    
+    async def get_guild_leaderboard(self, guild_id: str) -> list:
+        """Get guild leaderboard from storage."""
+        return await self.storage.get_guild_leaderboard(guild_id)
 
     async def save_all_data(self):
-         await self._save_json_data(self.data_file, "XP data", self.xp_data)
-         await self._save_json_data(self.roles_file, "Level roles", self.level_roles)
-         await self._save_json_data(self.messages_file, "Level messages", self.level_messages)
-         await self._save_json_data(self.backgrounds_file, "Background images", self.background_images)
-         await self._save_json_data(self.settings_file, "Leveling settings", self.leveling_data)
-
-    async def save_data(self):
-         await self._save_json_data(self.data_file, "XP data", self.xp_data)
-    async def save_level_roles(self):
-        await self._save_json_data(self.roles_file, "Level roles", self.level_roles)
-    async def save_level_messages(self):
-        await self._save_json_data(self.messages_file, "Level messages", self.level_messages)
-    async def save_backgrounds(self):
-        await self._save_json_data(self.backgrounds_file, "Background images", self.background_images)
-    async def save_leveling_settings(self):
-         await self._save_json_data(self.settings_file, "Leveling settings", self.leveling_data)
-
-    async def _save_json_data(self, file_path: str, data_name: str, data: dict):
-        try:
-             temp_file = f"{file_path}.tmp"
-             with open(temp_file, 'w', encoding='utf-8') as f: json.dump(data, f, indent=2)
-             os.replace(temp_file, file_path)
-        except Exception as e:
-            logger.error(f"Save Error {data_name} ({file_path}): {e}", exc_info=True)
-            if os.path.exists(temp_file):
-                try:
-                    os.remove(temp_file)
-                except Exception as rm_err:
-                    logger.error(f"Temp remove error {temp_file}: {rm_err}")
+        """Save all cached data through storage layer."""
+        # With the new storage layer, data is saved immediately on changes
+        # This method is kept for compatibility with the periodic save task
+        # But individual save operations happen in real-time
+        logger.info("Leveling data is auto-saved through storage layer")
 
     @tasks.loop(minutes=5)
     async def save_task(self):

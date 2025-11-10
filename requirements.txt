@@ -4,6 +4,7 @@ google-generativeai==0.3.1
 psutil==5.9.5
 aiohttp==3.9.1
 Pillow>=10.0.0
+motor==3.3.2
 
 # Notes:
 # - Removed the third-party 'asyncio' package (stdlib module; installing it can cause issues on modern Python).

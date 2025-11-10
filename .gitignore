@@ -1,6 +1,10 @@
-.env            # main environment file (ignored)
-.env.*          # any variant like .env.local
-!.env.example   # keep example env tracked for reference
+﻿# Environment file (ignored)
+.env
+# Any variant like .env.local
+.env.*
+# Keep example tracked for reference
+!.env.example
+venv/
 .venv/
 __pycache__/
 *.pyc
@@ -13,5 +17,3 @@ leveling_settings.json
 level_messages.json
 level_roles.json
 level_backgrounds.json
- 
-
